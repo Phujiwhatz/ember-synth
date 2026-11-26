@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ember·16 Synth</title>
-<meta name="description" content="Ember·16 is a free 16-voice polysynth that runs in your browser. Plug in a MIDI or MPE keyboard and play 174 patches.">
+<title>Ember Studio</title>
+<meta name="description" content="Ember Studio: five free synths in your browser — analog, FM, wavetable, tonewheel organ and string machine. 274 patches, layer and split, MIDI and MPE.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Archivo+Narrow:wght@500;600&display=swap" rel="stylesheet">
 <style>
@@ -53,6 +53,15 @@ h2{margin:0 0 12px;font-size:clamp(30px,4vw,44px);line-height:1.08;letter-spacin
 .ic svg{width:24px;height:24px;stroke:#24211f;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 #sounds{background:var(--panel)}
 .cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:10px}
+.insts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px}
+.inst{background:var(--panel2);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.inst img{display:block;width:100%;height:auto;aspect-ratio:1100/528;object-fit:cover;object-position:top;border-bottom:1px solid var(--line)}
+.inst .ib{padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px}
+.inst header{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.inst h3{margin:0;font-size:22px;color:var(--cream)}.inst h3 i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:8px;vertical-align:middle}
+.inst small{font:600 14px "Archivo Narrow",sans-serif;color:var(--red)}
+.inst p{margin:0;color:var(--dim);font-size:16px}
+.inst .ex{font:500 15px/1.45 "Archivo Narrow",sans-serif;color:var(--ink)}
 .cat{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
 .cat header{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
 .cat b{color:var(--cream);font-size:17px}.cat small{font:600 14px "Archivo Narrow",sans-serif;color:var(--red)}
@@ -76,39 +85,39 @@ kbd{font:600 14px "Archivo Narrow",sans-serif;background:var(--panel2);border:1p
 </head>
 <body>
 <nav><div class="wrap">
-  <a class="logo" href="#top">Ember<span>·</span>16</a>
-  <div class="links"><a href="#features">Features</a><a href="#sounds">Sounds</a><a href="#setup">Setup</a></div>
+  <a class="logo" href="#top">Ember<span>·</span>Studio</a>
+  <div class="links"><a href="#sounds">Instruments</a><a href="#features">Features</a><a href="#setup">Setup</a></div>
   <a class="btn primary small" href="synth.html">Play now</a>
 </div></nav>
 
 <header class="hero" id="top"><div class="wrap">
-  <h1>A warm, playable polysynth <em>in your browser</em></h1>
-  <p class="lead">Ember·16 is a 16-voice analog-style synth with 174 patches, from huge supersaw walls to electric pianos and acid bass. Plug in a MIDI keyboard and play. Nothing to install.</p>
+  <h1>Five classic synths, <em>one browser tab</em></h1>
+  <p class="lead">An analog polysynth, an 80s FM synth, a morphing wavetable synth, a tonewheel organ and a 70s string machine — 274 patches you can layer or split across your keyboard. Plug in a MIDI or MPE keyboard and play. Nothing to install.</p>
   <div class="cta">
-    <a class="btn primary" href="synth.html">Play Ember·16 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <a class="btn primary" href="synth.html">Play Ember Studio <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     <a class="btn" href="#setup">Connect a keyboard</a>
   </div>
   <div class="fine">Works in Chrome, Edge, Opera and Firefox · Free</div>
-  <div class="stage"><img src="ember-synth.jpg" alt="The Ember·16 synth panel: oscilloscope, patch display, rows of cream knobs and a lit keyboard playing a chord" width="1800" height="1956"></div>
+  <div class="stage"><img src="ember-synth.jpg" alt="Ember Studio with its five instrument tabs, showing the Ember·16 panel playing a chord" width="1800" height="1956"></div>
 </div></header>
 
 <div class="stats"><div class="wrap">
-  <div><b>16</b><span>voices at once</span></div>
-  <div><b>174</b><span>built-in patches</span></div>
-  <div><b>13</b><span>sound categories</span></div>
+  <div><b>5</b><span>instruments</span></div>
+  <div><b>274</b><span>built-in patches</span></div>
+  <div><b>A + B</b><span>layer or split two at once</span></div>
   <div><b>MPE</b><span>per-note bend and pressure</span></div>
 </div></div>
 
 <section id="features"><div class="wrap">
   <h2>Built to sound big and feel alive</h2>
-  <p class="sub">Every sound is made live from oscillators, the same way a classic analog synth works — no samples, no recordings.</p>
+  <p class="sub">Every sound is made live by the instruments' own engines, the way the hardware did it — no samples, no recordings.</p>
   <div class="grid" id="feat"></div>
 </div></section>
 
 <section id="sounds"><div class="wrap">
-  <h2>174 patches, ready to play</h2>
-  <p class="sub">Browse by category, search by name, then shape any patch and save it as your own.</p>
-  <div class="cats" id="cats"></div>
+  <h2>Five instruments, each with its own sound</h2>
+  <p class="sub">Switch with the tabs at the top of the synth. Each one has its own engine, its own panel and its own library of patches.</p>
+  <div class="insts" id="insts"></div>
 </div></section>
 
 <section id="setup"><div class="wrap">
@@ -116,9 +125,9 @@ kbd{font:600 14px "Archivo Narrow",sans-serif;background:var(--panel2);border:1p
   <p class="sub">Any USB MIDI keyboard works. No keyboard? Play with your computer keys: <kbd>A</kbd> to <kbd>;</kbd> for notes, <kbd>Z</kbd> and <kbd>X</kbd> to change octave.</p>
   <div class="steps">
     <div class="step"><h3>Use a MIDI-ready browser</h3><p>Chrome, Edge, Opera (including Opera GX) or Firefox. Safari doesn't support MIDI keyboards.</p></div>
-    <div class="step"><h3>Plug in, then open the synth</h3><p>Connect your keyboard by USB first, then press Play Ember·16 and click Power on.</p></div>
+    <div class="step"><h3>Plug in, then open the synth</h3><p>Connect your keyboard by USB first, then press Play Ember Studio and click Power on.</p></div>
     <div class="step"><h3>Allow MIDI</h3><p>Your browser asks to use MIDI devices. Click Allow — the status light shows your keyboard's name.</p></div>
-    <div class="step"><h3>Pick a patch and play</h3><p>Use ‹ › or the [ and ] keys to step through sounds, or open the Library to browse all 174.</p></div>
+    <div class="step"><h3>Pick an instrument and play</h3><p>Choose an instrument from the tabs, then use ‹ › or the [ and ] keys to step through its sounds, or open its Library.</p></div>
   </div>
   <div class="mpe">
     <div><h3>Got a ROLI Piano M or another MPE keyboard?</h3><p>Ember·16 reads per-note slides and pressure, so each note in a chord can bend and swell on its own.</p></div>
@@ -126,7 +135,7 @@ kbd{font:600 14px "Archivo Narrow",sans-serif;background:var(--panel2);border:1p
       <li>In ROLI Dashboard, turn on pitch bend and pressure.</li>
       <li>Use the <b>Lower</b> MPE zone.</li>
       <li>Set Pitch Bend Range to match the synth's <b>Note bend</b> knob (48 by default).</li>
-      <li>Try the patches in the MPE category first — they're built around pressure.</li>
+      <li>Every instrument responds to pressure — try Ember's MPE category, or Prism WT, where pressing harder morphs the wavetable.</li>
     </ul>
   </div>
   <div class="note">Opening this site inside another page (like a Google Sites embed) can block MIDI keyboards. If the synth says "MIDI blocked", open it in its own browser tab.</div>
@@ -134,12 +143,12 @@ kbd{font:600 14px "Archivo Narrow",sans-serif;background:var(--panel2);border:1p
 
 <section class="final"><div class="wrap">
   <h2>Ready to play?</h2>
-  <p class="sub" style="margin-inline:auto">Plug in, power on, and start with Skyline Supersaw.</p>
-  <a class="btn primary" href="synth.html">Play Ember·16</a>
+  <p class="sub" style="margin-inline:auto">Plug in, power on, and try layering Ensemble 70 under Ion FM’s electric piano.</p>
+  <a class="btn primary" href="synth.html">Play Ember Studio</a>
 </div></section>
 
 <footer><div class="wrap">
-  <span>Ember·16 runs entirely in your browser. Your sound and saved patches stay on your computer.</span>
+  <span>Ember Studio runs entirely in your browser. Your sound and saved patches stay on your computer.</span>
   <a href="synth.html">Open the synth</a>
 </div></footer>
 
@@ -157,27 +166,20 @@ const I = {
 const F = [
  ['midi','Plug-and-play MIDI','Connect any USB MIDI keyboard. Sustain pedal, mod wheel, pitch bend and controller knobs all work.'],
  ['mpe','MPE expression','Slide to bend a single note, press harder to open the filter, swell the volume or add vibrato — note by note.'],
- ['wave','A big analog engine','Two oscillators with up to 7-voice unison, sub, noise and FM, into a warm two-stage filter with its own envelope.'],
- ['fx','Lush effects','Saturation, stereo chorus, ping-pong delay and a reverb up to 12 seconds long for walls of sound.'],
+ ['wave','Layer and split','Stack two instruments on every key, or split the keyboard — FM bass on the left, string machine on the right — each with its own effects.'],
+ ['fx','Lush effects on every instrument','Saturation, stereo chorus, ping-pong delay and a reverb up to 12 seconds long — plus the organ’s rotary speaker and the string machine’s ensemble and phaser.'],
  ['glide','Arpeggiator, glide and mono','A tempo-synced arpeggiator with seven patterns and hold, plus Mono and Legato modes with portamento for gliding leads and basses.'],
  ['save','Save your own patches','Tweak any knob, save it to your library, and export or import patches to move them between browsers.']
 ];
 document.getElementById('feat').innerHTML = F.map(([i,t,d])=>`<div class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">${I[i]}</svg></div><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join('');
-const C = [
- ['Walls',18,'Skyline Supersaw, Shoegaze Blizzard, Wall of Sound, Infinite Sustain'],
- ['Pads',19,'Velvet Pad, Analog Dawn, Sweeping Prophet, 80s Movie Pad'],
- ['Atmospheres',12,'Deep Space, Desert Wind, Aurora, Event Horizon'],
- ['Strings & Brass',16,'Cinematic Strings, Solina Ensemble, Jump Brass, Fanfare'],
- ['Keys',15,'Tine Electric Piano, 80s DX Piano, Wurly Bite, Vibraphone'],
- ['Organs',6,'Gospel Organ, Church Pipes, Combo Organ'],
- ['Leads',18,'Screaming Saw, Portamento Lead, Theremin, Ocarina'],
- ['Bass',18,'Fat Analog Bass, Acid Line, Hoover Bass, 808 Boom'],
- ['Plucks & Bells',17,'Kalimba, Steel Drum, Tubular Bells, Dream Harp'],
- ['Arps & Sequences',10,'Berlin Sequence, Stranger Arp, Chip Arp — each with the arpeggiator on'],
- ['FX & Noise',8,'Riser Wash, Ocean Waves, Alien Chatter, Laser Zap'],
- ['MPE',16,'Bowed Cello, Breath Flute, Erhu, Wall Bloom']
+const INS = [
+ ['ember','#ec4a2c','Ember·16','Analog-style polysynth',174,'Warm, wide and huge: up to 7 detuned saws per voice, a two-stage filter, FM and an arpeggiator.','Skyline Supersaw · Velvet Pad · Acid Line · Shoegaze Blizzard'],
+ ['fm','#35c4b5','Ion FM','4-operator FM synth',31,'The glassy 80s digital sound: four operators in eight algorithms for electric pianos, bells, slap bass and brass.','DX Electric Piano · Tubular Bells · Lately Bass · Sync Lead FM'],
+ ['wt','#ff4fd8','Prism WT','Morphing wavetable synth',28,'Modern, moving tones: nine wavetables you can sweep through live with an envelope, the LFO or finger pressure.','Prism Pad · Shifting Sands · Growl Bass · Vowel Choir'],
+ ['organ','#e9a640','Tonewheel B3','Drawbar organ',20,'Nine drawbars, percussion and key click through a tube drive and a rotary speaker that speeds up when you push the mod wheel.','Jimmy Smith · Full Gospel · Rock Organ · Whiter Shade'],
+ ['strings','#d9541e','Ensemble 70','String & choir machine',21,'Lush 70s strings and choirs through the classic three-line ensemble chorus and a sweeping phaser.','Solina Classic · Oxygene Sweep · Choir Ahh · Jarre Pad']
 ];
-document.getElementById('cats').innerHTML = C.map(([n,c,ex])=>`<div class="cat"><header><b>${esc(n)}</b><small>${c} patches</small></header><p>${esc(ex)}</p></div>`).join('');
+document.getElementById('insts').innerHTML = INS.map(([id,col,n,t,c,d,ex])=>`<article class="inst"><img src="inst-${id}.jpg" alt="${esc(n)} panel" width="1100" height="528" loading="lazy"><div class="ib"><header><h3><i style="background:${col}"></i>${esc(n)}</h3><small>${c} patches</small></header><p><b style="color:var(--ink)">${esc(t)}.</b> ${esc(d)}</p><div class="ex">${esc(ex)}</div></div></article>`).join('');
 }
 </script>
 </body>
