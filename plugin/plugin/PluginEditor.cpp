@@ -1,4 +1,5 @@
 #include "PluginEditor.h"
+#include "StandaloneMidi.h"
 #include "BinaryData.h"
 
 static juce::String varToString (const juce::var& v, const char* key)
@@ -58,12 +59,30 @@ void EmberEditor::sendInit()
     o->setProperty ("state", proc.getUIState());
     o->setProperty ("user", proc.loadUserPatches());
     web.emitEventIfBrowserIsVisible ("init", juce::var (o));
+    midiNames = juce::StringArray { "?" };   // make the next MIDI check re-send the device list
+    midiCountdown = 0;
+}
+
+void EmberEditor::sendMidiDevices()
+{
+    auto* o = new juce::DynamicObject();
+    juce::Array<juce::var> list;
+    for (auto& n : midiNames) list.add (n);
+    o->setProperty ("devices", list);
+    web.emitEventIfBrowserIsVisible ("midi", juce::var (o));
 }
 
 void EmberEditor::timerCallback()
 {
     if (! ready) return;
     if (proc.stateVersion.load() != seenVersion) { seenVersion = proc.stateVersion.load(); sendInit(); }
+
+    if (proc.wrapperType == juce::AudioProcessor::wrapperType_Standalone && --midiCountdown <= 0)
+    {
+        midiCountdown = 30;   // check about once a second for keyboards being plugged in or out
+        if (ember::updateStandaloneMidi (midiSeen, midiNames))
+            sendMidiDevices();
+    }
 
     auto& eng = proc.getEngine();
     const auto snap = eng.getSnap();

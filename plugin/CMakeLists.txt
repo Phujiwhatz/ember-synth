@@ -11,6 +11,7 @@ FetchContent_MakeAvailable(JUCE)
 
 juce_add_plugin(EmberStudio
     COMPANY_NAME "Ember Studio"
+    ICON_BIG "${CMAKE_CURRENT_SOURCE_DIR}/assets/icon.png"
     BUNDLE_ID "com.emberstudio.synth"
     PLUGIN_MANUFACTURER_CODE Embr
     PLUGIN_CODE EmSt
@@ -31,6 +32,7 @@ juce_add_binary_data(EmberStudioData SOURCES ui/ui.html plugin/default_state.jso
 target_sources(EmberStudio PRIVATE
     plugin/PluginProcessor.cpp
     plugin/PluginEditor.cpp
+    plugin/StandaloneMidi.cpp
     core/engine.cpp
     core/instruments.cpp)
 

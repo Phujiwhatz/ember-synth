@@ -1931,6 +1931,8 @@ if(EMBEDDED || !/\.html?$|\/$/.test(location.pathname) || location.protocol==='b
    Object.assign(TICK, d);
    const on = new Set(d.keys||[]); for(const k in kbEls){ const el = kbEls[k], want = on.has(+k); if(el.classList.contains('on') !== want){ el.classList.toggle('on', want); if(!want) el.style.removeProperty('--p'); } }
   });
+  be.addEventListener('midi', d => { const st = $('#midiStatus'); if(!st) return; const n = (d.devices||[]).join(', ');
+   st.textContent = n ? 'MIDI: ' + n : 'MIDI: no keyboard found — plug one in'; $('#led').classList.toggle('ok', !!n); });
   be.addEventListener('param', d => { const s = slots[d.slot]; if(!s || !s.P) return; s.P[d.key] = d.value; if(d.slot===editSlot && ctl[d.key]) drawCtl(d.key); });
   bridge.emit('ready', {});
  }

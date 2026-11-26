@@ -20,6 +20,9 @@ private:
     juce::WebBrowserComponent web;
     bool ready = false;
     int seenVersion = 0;
+    int midiCountdown = 0;
+    juce::StringArray midiSeen, midiNames { "?" };
+    void sendMidiDevices();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EmberEditor)
 };
