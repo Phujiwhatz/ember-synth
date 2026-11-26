@@ -20,23 +20,23 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Archivo",syst
 .wrap{max-width:1240px;margin:0 auto;padding:clamp(14px,2.5vw,32px) max(3vw,10px)}
 
 /* ---------- themes ---------- */
-.synth{--panel:#24211f;--panel2:#2d2a27;--line:#3c3834;--label:#cfc7bb;--dim:#8d857a;--hi:#efe6d6;--accent:#ec4a2c;
+.synth,.lib{--panel:#24211f;--panel2:#2d2a27;--line:#3c3834;--label:#cfc7bb;--dim:#8d857a;--hi:#efe6d6;--accent:#ec4a2c;
  --kA:#fffaf0;--kB:#e6dccb;--kC:#b9ae9c;--kPtr:#24211f;--well:#14120f;--wellInk:#efe6d6;--ctl:#2d2a27;--ctlInk:#efe6d6;
  --screen:radial-gradient(ellipse at 50% 40%,#1d2b25,#0b100e);--brandFont:"Archivo",sans-serif;--brandW:800;
  --cheek:repeating-linear-gradient(95deg,#5b3420 0 3px,#673b25 3px 5px,#3a1f12 5px 9px,#4c2a19 9px 12px)}
-.synth[data-theme=fm]{--panel:#29272a;--panel2:#323034;--line:#48454b;--label:#dcd8de;--dim:#9a95a0;--hi:#f3f0f5;--accent:#35c4b5;
+.synth[data-theme=fm],.lib[data-theme=fm]{--panel:#29272a;--panel2:#323034;--line:#48454b;--label:#dcd8de;--dim:#9a95a0;--hi:#f3f0f5;--accent:#35c4b5;
  --kA:#4a474d;--kB:#2e2c30;--kC:#1b1a1d;--kPtr:#35c4b5;--well:#0b2b2c;--wellInk:#7ff0dd;--ctl:#3a383c;--ctlInk:#f3f0f5;
  --screen:#0b2b2c;--brandFont:"Chakra Petch",sans-serif;--brandW:700;
  --cheek:linear-gradient(90deg,#141315,#2b292d 40%,#141315)}
-.synth[data-theme=wt]{--panel:#11131f;--panel2:#181b2c;--line:#2b3050;--label:#c9d1ff;--dim:#7f88b8;--hi:#eef1ff;--accent:#ff4fd8;
+.synth[data-theme=wt],.lib[data-theme=wt]{--panel:#11131f;--panel2:#181b2c;--line:#2b3050;--label:#c9d1ff;--dim:#7f88b8;--hi:#eef1ff;--accent:#ff4fd8;
  --kA:#3a4170;--kB:#20254a;--kC:#0d1028;--kPtr:#50dcff;--well:#070816;--wellInk:#9fe9ff;--ctl:#1d2140;--ctlInk:#eef1ff;
  --screen:#0a0a1a;--brandFont:"Space Grotesk",sans-serif;--brandW:700;
  --cheek:linear-gradient(180deg,#ff4fd8,#6b3dff 50%,#50dcff)}
-.synth[data-theme=organ]{--panel:#2b1a10;--panel2:#382317;--line:#5c3b24;--label:#f0dcc0;--dim:#b8956d;--hi:#fbeedb;--accent:#e9a640;
+.synth[data-theme=organ],.lib[data-theme=organ]{--panel:#2b1a10;--panel2:#382317;--line:#5c3b24;--label:#f0dcc0;--dim:#b8956d;--hi:#fbeedb;--accent:#e9a640;
  --kA:#fffdf6;--kB:#efe3cb;--kC:#c7b28e;--kPtr:#3a2413;--well:#1b0f08;--wellInk:#f3d9a8;--ctl:#43291a;--ctlInk:#fbeedb;
  --screen:#1b0f08;--brandFont:"Playfair Display",serif;--brandW:700;
  --cheek:repeating-linear-gradient(90deg,#4a1d0c 0 4px,#5e2711 4px 7px,#3a150a 7px 12px)}
-.synth[data-theme=strings]{--panel:#e8d8b8;--panel2:#f3e7cf;--line:#c8af84;--label:#3b2816;--dim:#7d6142;--hi:#2a1a0c;--accent:#d9541e;
+.synth[data-theme=strings],.lib[data-theme=strings]{--panel:#e8d8b8;--panel2:#f3e7cf;--line:#c8af84;--label:#3b2816;--dim:#7d6142;--hi:#2a1a0c;--accent:#d9541e;
  --kA:#4a4440;--kB:#26221f;--kC:#0f0d0c;--kPtr:#f3e7cf;--well:#2a1a0c;--wellInk:#ffd9a0;--ctl:#f9f0dc;--ctlInk:#2a1a0c;
  --screen:#20160d;--brandFont:"Righteous",sans-serif;--brandW:400;
  --cheek:repeating-linear-gradient(90deg,#3d2412 0 3px,#523019 3px 6px,#2d1a0c 6px 10px)}
@@ -138,7 +138,7 @@ input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .plist{overflow:auto;padding:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;align-content:start}
 .pc{position:relative;text-align:left;display:flex;flex-direction:column;justify-content:center;min-height:58px;padding:6px 36px 6px 12px;background:var(--panel2);color:var(--hi)}
 .pc small{font:500 13px "Archivo Narrow",sans-serif;color:var(--dim)}
-.pc.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.pc.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:color-mix(in srgb,var(--accent) 16%,var(--panel2))}
 .pc .del{position:absolute;top:6px;right:6px;padding:2px 8px;border-radius:4px;color:var(--dim);font-size:16px}
 .pc .del:hover,.pc .del.armed{background:var(--accent);color:#fff;font-size:13px}
 .empty{grid-column:1/-1;color:var(--dim);padding:20px 4px}
@@ -1664,7 +1664,7 @@ function setParam(k, v){
 /* ---------- panel ---------- */
 function renderPanel(){
  const s = edS(), I = INSTR[s.instr];
- $('#synth').dataset.theme = I.theme;
+ $('#synth').dataset.theme = I.theme; $('#lib').dataset.theme = I.theme; $('#saveDlg').dataset.theme = I.theme;
  $('#brand').innerHTML = I.brand; $('#tag').textContent = I.tag;
  for(const k in ctl) delete ctl[k]; for(const k in defs) delete defs[k];
  const secs = [...I.sections, PERF_SECTION, ARP_SECTION, exprSection(s.instr), FX_SECTION];
