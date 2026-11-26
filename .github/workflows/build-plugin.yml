@@ -53,7 +53,7 @@ jobs:
           sleep 15
           pgrep -fl "Ember Studio" && echo "APP RUNNING"
           screencapture -x app-screenshot.png || true
-          sips -s format jpeg -s formatOptions 60 -Z 900 app-screenshot.png --out shot.jpg >/dev/null 2>&1 && { echo "SHOT-BEGIN"; base64 -i shot.jpg | tr -d '\n'; echo; echo "SHOT-END"; } || true
+          sips -s format jpeg -s formatOptions 60 -Z 900 app-screenshot.png --out shot.jpg >/dev/null 2>&1 && { echo "SHOT-BEGIN"; base64 -i shot.jpg | tr -d '\n' | fold -w 3000; echo; echo "SHOT-END"; } || true
           osascript -e 'quit app "Ember Studio"' || pkill -f "Ember Studio" || true
           sleep 3
           pgrep -fl "Ember Studio" || echo "APP QUIT CLEANLY"
