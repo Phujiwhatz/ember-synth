@@ -3,5 +3,6 @@
 namespace ember
 {
 // Returns true when the list of active MIDI inputs changed (names in enabledNames).
+void openStandaloneSettings();
 bool updateStandaloneMidi (juce::StringArray& seen, juce::StringArray& enabledNames);
 }

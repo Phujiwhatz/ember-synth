@@ -75,6 +75,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Archivo",syst
 select,button{font:600 16px "Archivo Narrow",sans-serif;background:var(--ctl);color:var(--ctlInk);border:1px solid var(--line);border-radius:6px;min-height:44px;padding:0 12px}
 select:focus-visible,button:focus-visible,.knob:focus-visible,.fader:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 button{cursor:pointer}button:hover{border-color:var(--dim)}
+#audioSetup{align-self:flex-start;min-height:36px;font-size:14px;border-color:var(--accent);color:var(--accent)}
 #popout{align-self:flex-start;min-height:40px;font-size:15px;border-color:var(--accent);color:var(--accent)}
 .midi{display:flex;align-items:center;gap:8px;font:500 14px "Archivo Narrow",sans-serif;color:var(--label)}
 .led{width:10px;height:10px;border-radius:50%;background:#0006;flex:none;transition:background .05s}
@@ -204,6 +205,7 @@ label.f{font:600 13px "Archivo Narrow",sans-serif;color:var(--dim);display:flex;
       <p id="tag"></p>
       <div class="midi"><span class="led" id="led"></span><span id="midiStatus">MIDI: waiting for power</span></div>
       <button id="popout" hidden>Open in new tab for MIDI ↗</button>
+      <button id="audioSetup" hidden>⚙ Audio &amp; MIDI settings</button>
     </div>
     <div class="scope"><canvas id="scope"></canvas></div>
     <div class="ctrl">
@@ -1915,7 +1917,9 @@ if(EMBEDDED || !/\.html?$|\/$/.test(location.pathname) || location.protocol==='b
  if(PLUGIN){
   $('#power').remove(); initMidi();
   const be = window.__JUCE__.backend;
+  $('#audioSetup').onclick = () => bridge.emit('openSettings', {});
   be.addEventListener('init', d => {
+   if(d.standalone) $('#audioSetup').hidden = false;
    try{ const u = d.user ? JSON.parse(d.user) : null; if(Array.isArray(u)){ USER = u.filter(x=>x && INSTR[x.instr] && x.name && x.p); } }catch(_){}
    let st = null; try{ st = d.state ? JSON.parse(d.state) : null; }catch(_){}
    if(st && st.slots){

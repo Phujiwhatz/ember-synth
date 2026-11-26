@@ -46,6 +46,25 @@ jobs:
           sleep 2
           auval -v aumu EmSt Embr | tail -40
 
+      - name: Smoke-test the standalone app (launch + screenshot)
+        continue-on-error: true
+        run: |
+          open "out/Ember Studio.app"
+          sleep 15
+          pgrep -fl "Ember Studio" && echo "APP RUNNING"
+          screencapture -x app-screenshot.png || true
+          osascript -e 'quit app "Ember Studio"' || pkill -f "Ember Studio" || true
+          sleep 3
+          pgrep -fl "Ember Studio" || echo "APP QUIT CLEANLY"
+          ls ~/Library/Application\ Support/Ember\ Studio* 2>/dev/null || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: app-screenshot
+          path: app-screenshot.png
+          if-no-files-found: ignore
+
       - name: Zip
         run: |
           cd out && ditto -c -k --sequesterRsrc --keepParent . "../Ember-Studio-macOS.zip" && cd ..

@@ -9,6 +9,14 @@
 
 namespace ember
 {
+void openStandaloneSettings()
+{
+   #if JucePlugin_Build_Standalone
+    if (auto* holder = juce::StandalonePluginHolder::getInstance())
+        holder->showAudioSettingsDialog();
+   #endif
+}
+
 bool updateStandaloneMidi (juce::StringArray& seen, juce::StringArray& enabledNames)
 {
    #if JucePlugin_Build_Standalone

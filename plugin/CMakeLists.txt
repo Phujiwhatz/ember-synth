@@ -45,3 +45,7 @@ target_compile_definitions(EmberStudio PUBLIC
 target_link_libraries(EmberStudio
     PRIVATE EmberStudioData juce::juce_audio_utils juce::juce_gui_extra
     PUBLIC juce::juce_recommended_config_flags juce::juce_recommended_lto_flags juce::juce_recommended_warning_flags)
+
+# The standalone app uses our own window and menu bar (plugin/StandaloneApp.cpp)
+target_sources(EmberStudio_Standalone PRIVATE plugin/StandaloneApp.cpp)
+target_compile_definitions(EmberStudio_Standalone PRIVATE JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1)

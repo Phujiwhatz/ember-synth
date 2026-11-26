@@ -22,6 +22,7 @@ juce::WebBrowserComponent::Options EmberEditor::makeOptions()
                 proc.noteFromUI ((int) o->getProperty ("key"), (int) o->getProperty ("vel"), (bool) o->getProperty ("on"));
         })
         .withEventListener ("panic", [this] (juce::var) { proc.panicFromUI(); })
+        .withEventListener ("openSettings", [] (juce::var) { ember::openStandaloneSettings(); })
         .withEventListener ("saveUser", [this] (juce::var v) { proc.saveUserPatches (varToString (v, "json")); });
 }
 
@@ -58,6 +59,7 @@ void EmberEditor::sendInit()
     auto* o = new juce::DynamicObject();
     o->setProperty ("state", proc.getUIState());
     o->setProperty ("user", proc.loadUserPatches());
+    o->setProperty ("standalone", proc.wrapperType == juce::AudioProcessor::wrapperType_Standalone);
     web.emitEventIfBrowserIsVisible ("init", juce::var (o));
     midiNames = juce::StringArray { "?" };   // make the next MIDI check re-send the device list
     midiCountdown = 0;
