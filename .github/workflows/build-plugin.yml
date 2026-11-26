@@ -1,0 +1,66 @@
+name: Build Ember Studio plugin (macOS)
+
+on:
+  push:
+    branches: [plugin]
+    paths: ['plugin/**', '.github/workflows/build-plugin.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  mac:
+    runs-on: macos-14
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Ninja
+        run: brew install ninja
+
+      - name: Configure (universal: Apple Silicon + Intel)
+        run: cmake -S plugin -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+
+      - name: Build AU, VST3 and Standalone
+        run: cmake --build build --config Release -j 4
+
+      - name: Collect and sign
+        run: |
+          set -e
+          A=build/EmberStudio_artefacts/Release
+          ls -R "$A" | head -40
+          mkdir -p out
+          cp -R "$A/AU/Ember Studio.component" out/
+          cp -R "$A/VST3/Ember Studio.vst3" out/
+          cp -R "$A/Standalone/Ember Studio.app" out/
+          for b in out/*.component out/*.vst3 out/*.app; do codesign --force --deep --sign - "$b"; done
+          cp "plugin/dist/Install Ember Studio.command" plugin/dist/README.txt out/
+          chmod +x "out/Install Ember Studio.command"
+
+      - name: Validate the Audio Unit with auval
+        run: |
+          mkdir -p ~/Library/Audio/Plug-Ins/Components
+          cp -R "out/Ember Studio.component" ~/Library/Audio/Plug-Ins/Components/
+          killall -9 AudioComponentRegistrar || true
+          sleep 2
+          auval -v aumu EmSt Embr | tail -40
+
+      - name: Zip
+        run: |
+          cd out && ditto -c -k --sequesterRsrc --keepParent . "../Ember-Studio-macOS.zip" && cd ..
+          ls -la Ember-Studio-macOS.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Ember-Studio-macOS
+          path: Ember-Studio-macOS.zip
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="plugin-v1.0.${{ github.run_number }}"
+          gh release create "$TAG" Ember-Studio-macOS.zip --target "${{ github.sha }}" \
+            --title "Ember Studio plugin 1.0.${{ github.run_number }}" \
+            --notes "Ember Studio as an Audio Unit (Logic Pro), VST3 and standalone app for macOS (Apple Silicon and Intel). Download Ember-Studio-macOS.zip, unzip it, and open 'Install Ember Studio.command' (right-click > Open)."
