@@ -68,8 +68,11 @@
     if (window.__ACID_NO_WORKLET) return Promise.reject(new Error('forced fallback'));
     if (!ctx.audioWorklet || typeof AudioWorkletNode === 'undefined') return Promise.reject(new Error('no audioWorklet'));
     if (workletLoaded.has(ctx)) return workletLoaded.get(ctx);
-    var url = URL.createObjectURL(new Blob([WORKLET_SRC], { type: 'application/javascript' }));
-    var p = ctx.audioWorklet.addModule(url);
+    // file:// pages (the offline file and the Mac app) can't load blob: modules, so try a data: URL first there
+    var dataUrl = 'data:application/javascript;charset=utf-8,' + encodeURIComponent(WORKLET_SRC);
+    var blobUrl = URL.createObjectURL(new Blob([WORKLET_SRC], { type: 'application/javascript' }));
+    var first = location.protocol === 'file:' ? dataUrl : blobUrl, second = first === dataUrl ? blobUrl : dataUrl;
+    var p = ctx.audioWorklet.addModule(first).catch(function () { return ctx.audioWorklet.addModule(second); });
     workletLoaded.set(ctx, p);
     return p;
   }

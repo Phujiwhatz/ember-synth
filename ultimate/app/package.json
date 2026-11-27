@@ -1,13 +1,13 @@
 {
   "name": "ember-ultimate",
   "productName": "Ember Ultimate",
-  "version": "1.0.0",
-  "description": "Offline music studio: Ember Studio, Keys, Acid and Drift",
+  "version": "1.1.0",
+  "description": "Offline music studio: Ember Studio, Pulse 16, Keys, Acid and Drift",
   "main": "main.js",
   "private": true,
   "scripts": {
     "start": "electron .",
-    "package": "electron-packager . \"Ember Ultimate\" --platform=darwin --arch=universal --icon=build/icon.icns --app-bundle-id=com.phujiwhatz.emberultimate --app-version=1.0.0 --out=out --overwrite --ignore=^/out --ignore=^/build/icon-1024.png"
+    "package": "electron-packager . \"Ember Ultimate\" --platform=darwin --arch=universal --icon=build/icon.icns --app-bundle-id=com.phujiwhatz.emberultimate --app-version=1.1.0 --out=out --overwrite --ignore=^/out --ignore=^/build/icon-1024.png"
   },
   "devDependencies": {
     "electron": "^33.0.0",

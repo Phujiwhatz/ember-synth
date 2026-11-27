@@ -1,7 +1,7 @@
 // Playwright test for the Keys plugin. Usage: node tests/keys-test.js [fx|real]
 const { chromium } = require('playwright');
 const mode = process.argv[2] || 'fx';
-const URL = 'http://localhost:8765/tests/keys-harness.html' + (mode === 'fx' ? '?fx=1' : '');
+const URL = (process.env.KBASE||'http://localhost:8765')+'/tests/keys-harness.html' + (mode === 'fx' ? '?fx=1' : '');
 const shot = (n) => `/tmp/keys-${mode}-${n}.png`;
 let fails = 0;
 function check(ok, msg) { console.log((ok ? 'PASS ' : 'FAIL ') + msg); if (!ok) fails++; }

@@ -801,6 +801,7 @@
       parts.push(inst.user ? 'chromatic' : rlo === rhi ? 'root ' + noteName(rlo) : 'sampled ' + noteName(rlo) + '–' + noteName(rhi));
       if (looped) parts.push('looped');
       parts.push('release ' + fmtSec(inst.release != null ? inst.release : 0.5));
+      if (inst.credit) parts.push(inst.credit);
       return parts.join('  ·  ');
     }
     function optionsHtml(sel) {

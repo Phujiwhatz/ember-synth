@@ -73,4 +73,4 @@ jobs:
           TAG="ultimate-v1.0.${{ github.run_number }}"
           gh release create "$TAG" Ember-Ultimate-macOS.zip --target "${{ github.sha }}" \
             --title "Ember Ultimate app 1.0.${{ github.run_number }}" \
-            --notes "Ember Ultimate for macOS (Apple Silicon and Intel): Ember Studio, Keys, Acid and Drift in one offline app. Download Ember-Ultimate-macOS.zip, unzip it, drag Ember Ultimate.app to Applications, then right-click it > Open the first time."
+            --notes "Ember Ultimate for macOS (Apple Silicon and Intel): Ember Studio, Pulse 16, Keys, Acid and Drift in one offline app. Download Ember-Ultimate-macOS.zip, unzip it, drag Ember Ultimate.app to Applications, then right-click it > Open the first time."

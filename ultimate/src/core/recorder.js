@@ -15,8 +15,10 @@
     sink = ctx.createGain(); sink.gain.value = 0; sink.connect(ctx.destination);
     readyP = Promise.resolve().then(function () {
       if (!ctx.audioWorklet || typeof AudioWorkletNode === 'undefined') throw new Error('no worklet');
-      var url = URL.createObjectURL(new Blob([WORKLET], { type: 'application/javascript' }));
-      return ctx.audioWorklet.addModule(url).then(function () {
+      var dataUrl = 'data:application/javascript;charset=utf-8,' + encodeURIComponent(WORKLET);
+      var blobUrl = URL.createObjectURL(new Blob([WORKLET], { type: 'application/javascript' }));
+      var first = location.protocol === 'file:' ? dataUrl : blobUrl, second = first === dataUrl ? blobUrl : dataUrl;
+      return ctx.audioWorklet.addModule(first).catch(function () { return ctx.audioWorklet.addModule(second); }).then(function () {
         node = new AudioWorkletNode(ctx, 'eu-rec', { numberOfInputs: 1, numberOfOutputs: 1, outputChannelCount: [2], channelCount: 2, channelCountMode: 'explicit' });
         node.port.onmessage = function (e) { push(e.data[0], e.data[1]); };
         mode = 'worklet';
