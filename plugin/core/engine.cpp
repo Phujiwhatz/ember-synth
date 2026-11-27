@@ -141,7 +141,10 @@ Voice* Engine::startVoice(Slot& s, int key, int vel, int ch, bool overlap) {
     double gf = (s.glide > 0.001 && (s.glideMode == "always" || overlap) && s.lastFreq > 0) ? s.lastFreq : 0;
     s.lastFreq = f;
     NoteInfo ni; ni.f = f; ni.note = note; ni.vel = vel; ni.sr = sr;
-    ni.velG = (1 - s.velSens) + s.velSens * std::pow(vel / 127.0, 1.6);
+    {   // same curve as the browser version: 'Velocity' sets the range (0 = none, 100% = 36 dB)
+        const double x = std::clamp(vel / 127.0, 0.0, 1.0), range = s.velSens > 0 ? 36 * std::pow(s.velSens, 0.7) : 0;
+        ni.velG = std::pow(10.0, -range * std::pow(1 - x, 1.4) / 20);
+    }
     for (auto& v : s.voices) if (!v->rel) ni.othersHeld = true;
     auto vp = s.inst->makeVoice(s, ni);
     if (!vp) return nullptr;
