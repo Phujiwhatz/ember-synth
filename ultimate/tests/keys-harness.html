@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Keys harness</title>
+<link rel="stylesheet" href="../src/plugins/keys.css">
+<style>html,body{margin:0;background:#0d0c0b;color:#eee;font:13px system-ui,sans-serif}#host{padding:16px;max-width:1280px;margin:0 auto}</style>
+</head><body>
+<div id="host"></div>
+<script src="mock-studio.js"></script>
+<script>if (/[?&]fx=1/.test(location.search)) MockStudio.samplesBase = 'keys-fixtures/';</script>
+<script src="../src/plugins/keys.js"></script>
+<script>
+window.keysReady = MockStudio.boot('keys', document.getElementById('host')).then(function (p) {
+  window.K = p;
+  // QWERTY for manual testing
+  var map = { a: 60, w: 61, s: 62, e: 63, d: 64, f: 65, t: 66, g: 67, y: 68, h: 69, u: 70, j: 71, k: 72 }, down = {};
+  addEventListener('keydown', function (e) { var n = map[e.key]; if (n && !down[n] && !e.repeat) { down[n] = 1; Studio.ctx.resume(); p.noteOn(n, 0.8, Studio.ctx.currentTime, { ch: 0, mpe: false }); } });
+  addEventListener('keyup', function (e) { var n = map[e.key]; if (n) { down[n] = 0; p.noteOff(n, Studio.ctx.currentTime, { ch: 0 }); } });
+  return p;
+});
+</script>
+</body></html>

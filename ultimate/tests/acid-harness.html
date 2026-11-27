@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Acid harness</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../src/plugins/acid.css">
+<style>
+  html{background:#0e0f10;color:#ddd;font:14px system-ui,sans-serif}
+  .hbar{display:flex;gap:10px;align-items:center;padding:10px 16px}
+  .hbar button{font:600 14px system-ui;padding:6px 14px}
+  #host{padding:0 16px 16px;max-width:1240px}
+</style>
+<script>if (/noworklet/.test(location.search)) window.__ACID_NO_WORKLET = true;
+  window.__MANIFEST__ = { version: 1, samples: [], kits: {}, instruments: {} }; // Acid needs no samples</script>
+<script src="mock-studio.js"></script>
+<script src="../src/plugins/acid.js"></script>
+</head><body>
+<div class="hbar">
+  <button id="play">Play</button><button id="stop">Stop</button>
+  BPM <input id="bpm" type="number" value="126" min="40" max="240" style="width:60px">
+  <span id="rms"></span>
+</div>
+<div id="host"></div>
+<script>
+  window.acidReady = MockStudio.boot('acid', document.getElementById('host')).then(function (p) { window.acid = p; return p.engineType; });
+  document.getElementById('play').onclick = function () { Studio.ctx.resume(); Studio.transport.setBpm(+document.getElementById('bpm').value); Studio.transport.start(); };
+  document.getElementById('stop').onclick = function () { Studio.transport.stop(); };
+  setInterval(function () { document.getElementById('rms').textContent = 'RMS ' + MockStudio.rms().toFixed(3); }, 200);
+</script>
+</body></html>

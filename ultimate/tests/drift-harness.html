@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Drift harness</title>
+<link rel="stylesheet" href="../src/plugins/drift.css">
+<style>html,body{margin:0;background:#0b0c0e;color:#ddd;font-family:system-ui,sans-serif}#host{max-width:1180px;margin:20px auto;padding:0 16px}</style>
+</head><body>
+<div id="host"></div>
+<script src="mock-studio.js"></script>
+<script src="../src/plugins/drift.js"></script>
+<script>
+window.__ready = MockStudio.boot('drift', document.getElementById('host')).then(function (p) { window.drift = p; return true; });
+// QWERTY test keys
+var km = {a:60,w:61,s:62,e:63,d:64,f:65,t:66,g:67,y:68,h:69,u:70,j:71,k:72}, down = {};
+addEventListener('keydown', function (e) { var n = km[e.key]; if (n && !down[n] && window.drift) { down[n] = 1; drift.noteOn(n, 0.8, 0, {ch:0}); } });
+addEventListener('keyup', function (e) { var n = km[e.key]; if (n && window.drift) { down[n] = 0; drift.noteOff(n, 0, {ch:0}); } });
+</script>
+</body></html>

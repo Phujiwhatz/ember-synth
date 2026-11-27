@@ -1,0 +1,144 @@
+/* Ember Studio plugin — styles ported from ../synth.html, scoped under .plug-ember.
+   Google Fonts replaced by system stacks that resemble them (offline build). */
+.plug-ember{color-scheme:dark;--bg:#121110;--ink:#ece7df;
+ --fA:"Archivo","Helvetica Neue","Segoe UI",Roboto,Arial,system-ui,sans-serif;
+ --fN:"Archivo Narrow","Avenir Next Condensed","Arial Narrow","Roboto Condensed","Helvetica Neue",Arial,sans-serif;
+ --fFM:"Chakra Petch","DIN Alternate","Eurostile","Bahnschrift","Avenir Next",sans-serif;
+ --fWT:"Space Grotesk","Avenir Next","Futura","Segoe UI",sans-serif;
+ --fORG:"Playfair Display","Didot","Bodoni 72","Georgia",serif;
+ --fSTR:"Righteous","Arial Rounded MT Bold","Futura","Trebuchet MS",sans-serif;
+ --fLCD:"VT323","Andale Mono","Menlo","Consolas",monospace;
+ display:block;background:var(--bg);color:var(--ink);font:16px/1.5 var(--fA);overflow-x:clip;min-height:560px}
+.plug-ember,.plug-ember *,.plug-ember *::before,.plug-ember *::after{box-sizing:border-box;min-width:0}
+.plug-ember [hidden]{display:none!important}
+.plug-ember .wrap{max-width:1200px;margin:0 auto;padding:clamp(10px,1.6vw,20px) clamp(10px,1.6vw,20px) 16px}
+.plug-ember .pbtns{display:flex;gap:8px}.plug-ember .pbtns button{flex:1}
+.plug-ember .synth,.plug-ember .lib{--panel:#24211f;--panel2:#2d2a27;--line:#3c3834;--label:#cfc7bb;--dim:#8d857a;--hi:#efe6d6;--accent:#ec4a2c;
+ --kA:#fffaf0;--kB:#e6dccb;--kC:#b9ae9c;--kPtr:#24211f;--well:#14120f;--wellInk:#efe6d6;--ctl:#2d2a27;--ctlInk:#efe6d6;
+ --screen:radial-gradient(ellipse at 50% 40%,#1d2b25,#0b100e);--brandFont:var(--fA);--brandW:800;
+ --cheek:repeating-linear-gradient(95deg,#5b3420 0 3px,#673b25 3px 5px,#3a1f12 5px 9px,#4c2a19 9px 12px)}
+.plug-ember .synth[data-theme=fm],.plug-ember .lib[data-theme=fm]{--panel:#29272a;--panel2:#323034;--line:#48454b;--label:#dcd8de;--dim:#9a95a0;--hi:#f3f0f5;--accent:#35c4b5;
+ --kA:#4a474d;--kB:#2e2c30;--kC:#1b1a1d;--kPtr:#35c4b5;--well:#0b2b2c;--wellInk:#7ff0dd;--ctl:#3a383c;--ctlInk:#f3f0f5;
+ --screen:#0b2b2c;--brandFont:var(--fFM);--brandW:700;
+ --cheek:linear-gradient(90deg,#141315,#2b292d 40%,#141315)}
+.plug-ember .synth[data-theme=wt],.plug-ember .lib[data-theme=wt]{--panel:#11131f;--panel2:#181b2c;--line:#2b3050;--label:#c9d1ff;--dim:#7f88b8;--hi:#eef1ff;--accent:#ff4fd8;
+ --kA:#3a4170;--kB:#20254a;--kC:#0d1028;--kPtr:#50dcff;--well:#070816;--wellInk:#9fe9ff;--ctl:#1d2140;--ctlInk:#eef1ff;
+ --screen:#0a0a1a;--brandFont:var(--fWT);--brandW:700;
+ --cheek:linear-gradient(180deg,#ff4fd8,#6b3dff 50%,#50dcff)}
+.plug-ember .synth[data-theme=organ],.plug-ember .lib[data-theme=organ]{--panel:#2b1a10;--panel2:#382317;--line:#5c3b24;--label:#f0dcc0;--dim:#b8956d;--hi:#fbeedb;--accent:#e9a640;
+ --kA:#fffdf6;--kB:#efe3cb;--kC:#c7b28e;--kPtr:#3a2413;--well:#1b0f08;--wellInk:#f3d9a8;--ctl:#43291a;--ctlInk:#fbeedb;
+ --screen:#1b0f08;--brandFont:var(--fORG);--brandW:700;
+ --cheek:repeating-linear-gradient(90deg,#4a1d0c 0 4px,#5e2711 4px 7px,#3a150a 7px 12px)}
+.plug-ember .synth[data-theme=strings],.plug-ember .lib[data-theme=strings]{--panel:#e8d8b8;--panel2:#f3e7cf;--line:#c8af84;--label:#3b2816;--dim:#7d6142;--hi:#2a1a0c;--accent:#d9541e;
+ --kA:#4a4440;--kB:#26221f;--kC:#0f0d0c;--kPtr:#f3e7cf;--well:#2a1a0c;--wellInk:#ffd9a0;--ctl:#f9f0dc;--ctlInk:#2a1a0c;
+ --screen:#20160d;--brandFont:var(--fSTR);--brandW:400;
+ --cheek:repeating-linear-gradient(90deg,#3d2412 0 3px,#523019 3px 6px,#2d1a0c 6px 10px)}
+.plug-ember .bar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;margin-bottom:12px}
+.plug-ember .tabs{display:flex;flex-wrap:wrap;gap:6px}
+.plug-ember .tab{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:22px;border:1px solid #36322e;background:#1c1a18;color:var(--ink);font:700 15px var(--fA);cursor:pointer}
+.plug-ember .tab i{width:12px;height:12px;border-radius:50%;flex:none}
+.plug-ember .tab[aria-selected=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.plug-ember .tab:focus-visible{outline:2px solid #ec4a2c;outline-offset:2px}
+.plug-ember .layer{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font:600 14px var(--fN)}
+.plug-ember .layer select,.plug-ember .layer button{font:600 15px var(--fN);min-height:40px;border-radius:20px;border:1px solid #36322e;background:#1c1a18;color:var(--ink);padding:0 12px;cursor:pointer}
+.plug-ember .layer button[aria-pressed=true]{background:#ec4a2c;border-color:#ec4a2c;color:#fff}
+.plug-ember .layer .bset{display:flex;gap:6px;align-items:center}
+.plug-ember .layer input[type=range]{width:90px;accent-color:#ec4a2c}
+.plug-ember .slotinfo{font:500 14px var(--fN);color:#9a9184;flex-basis:100%;margin-top:-2px}
+.plug-ember .slotinfo b{color:var(--ink)}
+.plug-ember .synth{display:grid;grid-template-columns:22px minmax(0,1fr) 22px;border-radius:14px;overflow:hidden;box-shadow:0 30px 60px -20px #0008,0 2px 0 #fff2 inset}
+.plug-ember .cheek{background:var(--cheek)}
+.plug-ember .body{background:var(--panel);color:var(--label);padding:18px clamp(10px,2vw,24px) 16px}
+.plug-ember .top{display:flex;flex-wrap:wrap;gap:16px;align-items:stretch;margin-bottom:16px}
+.plug-ember .brand{flex:1 1 220px;display:flex;flex-direction:column;justify-content:space-between;gap:10px}
+.plug-ember .brand h1{margin:0;font-family:var(--brandFont);font-weight:var(--brandW);font-size:clamp(30px,4vw,44px);line-height:1.05;letter-spacing:-.01em;color:var(--hi)}
+.plug-ember .synth[data-theme=organ] .brand h1{font-style:italic}
+.plug-ember .brand h1 span{color:var(--accent)}
+.plug-ember .brand p{margin:0;font-size:14px;color:var(--dim)}
+.plug-ember .scope{flex:2 1 320px;position:relative;min-height:150px;background:var(--screen);border-radius:8px;border:2px solid #0008;box-shadow:inset 0 0 30px #000}
+.plug-ember .scope canvas{position:absolute;inset:0;width:100%;height:100%}
+.plug-ember .ctrl{flex:1 1 240px;display:flex;flex-direction:column;gap:8px}
+.plug-ember select,.plug-ember button{font:600 16px var(--fN);background:var(--ctl);color:var(--ctlInk);border:1px solid var(--line);border-radius:6px;min-height:44px;padding:0 12px}
+.plug-ember select:focus-visible,.plug-ember button:focus-visible,.plug-ember .knob:focus-visible,.plug-ember .fader:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.plug-ember button{cursor:pointer}
+.plug-ember button:hover{border-color:var(--dim)}
+.plug-ember .midi{display:flex;align-items:center;gap:8px;font:500 14px var(--fN);color:var(--label)}
+.plug-ember .led{width:10px;height:10px;border-radius:50%;background:#0006;flex:none;transition:background .05s}
+.plug-ember .led.on{background:var(--accent);box-shadow:0 0 10px var(--accent)}
+.plug-ember .led.ok{background:color-mix(in srgb,var(--accent) 35%,#000)}
+.plug-ember .sections{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:10px}
+.plug-ember .sec{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 10px 6px}
+.plug-ember .sec.wide{grid-column:1/-1}
+.plug-ember .sec h2{margin:0 0 6px;font:700 13px var(--fN);color:var(--hi);display:flex;gap:8px;align-items:center}
+.plug-ember .sec h2 .led{order:2;width:9px;height:9px}
+.plug-ember .sec h2::after{order:1;content:"";flex:1;height:1px;background:var(--line)}
+.plug-ember .row{display:flex;flex-wrap:wrap;gap:2px 4px;align-items:flex-start}
+.plug-ember .row select{min-height:36px;font-size:15px;padding:0 8px;margin:4px 6px 8px 0}
+.plug-ember .knob{width:74px;display:flex;flex-direction:column;align-items:center;cursor:ns-resize;touch-action:none;user-select:none;padding:2px 0 6px;border-radius:6px}
+.plug-ember .knob svg{width:44px;height:44px;overflow:visible}
+.plug-ember .knob .lab,.plug-ember .fader .lab{font:600 13px var(--fN);color:var(--label);line-height:1.1;text-align:center}
+.plug-ember .knob .val,.plug-ember .fader .val{font:500 13px var(--fN);color:var(--dim);height:16px;white-space:nowrap}
+.plug-ember .knob:hover .val,.plug-ember .knob.drag .val,.plug-ember .fader:hover .val,.plug-ember .fader.drag .val{color:var(--accent)}
+.plug-ember .synth[data-theme=fm] .knob .arcbg{stroke:#1b1a1d}
+.plug-ember .synth[data-theme=wt] .knob .arcv{filter:drop-shadow(0 0 3px var(--accent))}
+.plug-ember .fader{width:64px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:ns-resize;touch-action:none;user-select:none;padding:2px 0 6px;border-radius:6px}
+.plug-ember .fader .trk{position:relative;width:10px;height:118px;margin:8px 0 10px;border-radius:5px;background:#0007;box-shadow:inset 0 1px 3px #000}
+.plug-ember .fader .cap{position:absolute;left:50%;bottom:calc(var(--v)*100%);width:36px;height:20px;transform:translate(-50%,50%);border-radius:3px;background:linear-gradient(#fff6,#0003),var(--cc,#ddd);box-shadow:0 3px 4px #0008}
+.plug-ember .fader .cap::after{content:"";position:absolute;left:4px;right:4px;top:50%;height:2px;background:#fffb}
+.plug-ember .fader.drawbar .trk{width:28px;height:150px;background:linear-gradient(90deg,#0009,#0004 50%,#0009);border-radius:3px}
+.plug-ember .fader.drawbar .rod{position:absolute;left:8px;right:8px;top:0;height:calc(14px + var(--v)*112px);background:linear-gradient(90deg,#8d8d8d,#e8e8e8 45%,#7a7a7a)}
+.plug-ember .fader.drawbar .tip{position:absolute;left:0;right:0;top:calc(14px + var(--v)*112px);height:26px;border-radius:2px 2px 6px 6px;background:var(--cc);box-shadow:0 3px 5px #000a;display:grid;place-items:center;font:700 13px var(--fN);color:var(--ci)}
+.plug-ember .fader.drawbar{cursor:ns-resize}
+.plug-ember .patch{display:flex;gap:6px}
+.plug-ember .patch>button:not(.pname){min-width:44px;font-size:22px;padding:0}
+.plug-ember .pname{flex:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;text-align:left;padding:4px 12px;min-height:58px;background:var(--well);border-color:#000;box-shadow:inset 0 2px 8px #000}
+.plug-ember .pname small{font:600 13px var(--fN);color:var(--accent);line-height:1.2}
+.plug-ember .pname span{font:700 19px/1.2 var(--fA);color:var(--wellInk);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.plug-ember .synth[data-theme=fm] .pname span{font:400 24px/1.1 var(--fLCD);letter-spacing:.02em}
+.plug-ember .lib{position:fixed;inset:0;z-index:20;background:#000a;display:grid;place-items:center;padding:12px}
+.plug-ember .lib[hidden]{display:none}
+.plug-ember .libbox{width:min(920px,100%);height:min(680px,92vh);display:grid;grid-template-rows:auto minmax(0,1fr) auto;background:var(--panel);color:var(--label);border-radius:12px;border:1px solid var(--line);box-shadow:0 30px 80px #000c;overflow:hidden;margin:0}
+.plug-ember .savebox{height:auto;width:min(440px,100%)}
+.plug-ember .libhead{display:flex;gap:10px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.plug-ember .libhead h2{margin:0;font:800 24px/1.1 var(--fA);color:var(--hi);flex:1 1 auto}
+.plug-ember .libhead input{flex:1 1 200px}
+.plug-ember input[type=search],.plug-ember input[type=text]{font:16px var(--fA);background:var(--well);color:var(--wellInk);border:1px solid var(--line);border-radius:6px;min-height:44px;padding:0 12px}
+.plug-ember input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.plug-ember .libmain{display:grid;grid-template-columns:190px minmax(0,1fr);min-height:0}
+.plug-ember .cats{border-right:1px solid var(--line);overflow:auto;padding:8px}
+.plug-ember .cats button{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;border:0;background:none;text-align:left;min-height:40px;color:var(--label)}
+.plug-ember .cats button.on{background:var(--panel2);color:var(--accent)}
+.plug-ember .cats small{color:var(--dim);font-size:13px}
+.plug-ember .plist{overflow:auto;padding:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;align-content:start}
+.plug-ember .pc{position:relative;text-align:left;display:flex;flex-direction:column;justify-content:center;min-height:58px;padding:6px 36px 6px 12px;background:var(--panel2);color:var(--hi)}
+.plug-ember .pc small{font:500 13px var(--fN);color:var(--dim)}
+.plug-ember .pc.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:color-mix(in srgb,var(--accent) 16%,var(--panel2))}
+.plug-ember .pc .del{position:absolute;top:6px;right:6px;padding:2px 8px;border-radius:4px;color:var(--dim);font-size:16px}
+.plug-ember .pc .del:hover,.plug-ember .pc .del.armed{background:var(--accent);color:#fff;font-size:13px}
+.plug-ember .empty{grid-column:1/-1;color:var(--dim);padding:20px 4px}
+.plug-ember .libfoot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 16px;border-top:1px solid var(--line);font-size:14px;color:var(--dim)}
+.plug-ember .libfoot .primary{background:var(--accent);border-color:var(--accent);color:#fff;margin-left:auto}
+.plug-ember .btn{font:600 16px var(--fN);background:var(--ctl);color:var(--ctlInk);border:1px solid var(--line);border-radius:6px;min-height:44px;padding:0 12px;display:inline-flex;align-items:center;cursor:pointer}
+.plug-ember .savebody{padding:16px;display:grid;gap:12px}
+.plug-ember .savebody select{width:100%}
+.plug-ember label.f{font:600 13px var(--fN);color:var(--dim);display:flex;flex-direction:column;gap:4px}
+.plug-ember #emb-saveNote{margin:0;min-height:20px;font-size:14px;color:var(--dim)}
+.plug-ember .fmeter{display:flex;align-items:center;gap:8px;margin:2px 2px 6px;font:500 13px var(--fN);color:var(--dim)}
+.plug-ember .fmeter .fval{min-width:62px;text-align:right;color:var(--hi);white-space:nowrap}
+.plug-ember .fbar{flex:1;height:8px;background:var(--well);border-radius:4px;overflow:hidden;box-shadow:inset 0 1px 2px #000}
+.plug-ember .fbar i{display:block;height:100%;width:0;background:var(--accent)}
+.plug-ember .fhint{margin:0 2px 6px;font:500 13px/1.35 var(--fN);color:var(--accent)}
+.plug-ember .fhint:empty{display:none}
+.plug-ember .sec.muted .knob{opacity:.42}
+.plug-ember .note{font-size:14px;color:#9a9184;margin:14px 4px 0;max-width:75ch}
+.plug-ember .note b{color:var(--ink)}
+@media(max-width:600px){
+.plug-ember .libmain{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+.plug-ember .cats{display:flex;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line)}
+.plug-ember .cats button{width:auto;flex:none}
+.plug-ember .knob{width:70px}
+.plug-ember .tab{padding:0 10px;font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){
+.plug-ember .led{transition:none}
+}

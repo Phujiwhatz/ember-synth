@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#1a1816">
+<title>Ember Ultimate</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231a1816'/%3E%3Crect x='26' y='26' width='12' height='12' rx='2' fill='%23ec4a2c'/%3E%3C/svg%3E">
+<!--{{PWA_HEAD}}-->
+<style>
+/*{{CORE_CSS}}*/
+</style>
+<style>
+/*{{PLUGIN_CSS}}*/
+</style>
+</head>
+<body>
+<div id="eu-app" class="eu">
+  <header id="eu-top"></header>
+  <div id="eu-main">
+    <nav id="eu-tabs" role="tablist" aria-label="Instruments"></nav>
+    <main id="eu-stage"></main>
+  </div>
+  <section id="eu-dock" aria-label="Mixer and keyboard">
+    <div id="eu-mixer"><div id="eu-strips"></div><div id="eu-master"></div></div>
+    <div id="eu-keys"></div>
+  </section>
+  <div id="eu-menu" hidden></div>
+  <div id="eu-toasts" aria-live="polite"></div>
+  <div id="eu-overlay"></div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <radialGradient id="eu-capg" cx="40%" cy="30%" r="75%"><stop offset="0" stop-color="#fffaf0"/><stop offset=".55" stop-color="#e2d8c6"/><stop offset="1" stop-color="#9d9483"/></radialGradient>
+  </defs></svg>
+</div>
+<script>
+/*{{DATA}}*/
+</script>
+<script>
+/*{{CORE_JS}}*/
+</script>
+<!--{{PLUGIN_SCRIPTS}}-->
+<script>
+Studio._boot();
+</script>
+</body>
+</html>

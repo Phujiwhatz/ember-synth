@@ -1,0 +1,164 @@
+/* Ember Ultimate - Acid plugin. Everything scoped under .plug-acid */
+.plug-acid{
+  --acid:#c6f432; --acidD:#7d9c12; --acidGlow:#c6f43299;
+  --silverA:#e4e6e7; --silverB:#b7babd; --ink:#1b1c1d; --inkDim:#4b4e52;
+  --blk:#121314; --blk2:#1b1c1e; --blk3:#26282b; --line:#34373b; --txt:#d9dcd6; --dim:#8a8f88;
+  --sans:"Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
+  --nar:"Arial Narrow","Helvetica Neue Condensed","Roboto Condensed","Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  display:flex;flex-direction:column;width:100%;min-height:560px;box-sizing:border-box;
+  font-family:var(--sans);color:var(--txt);border-radius:12px;overflow:hidden;
+  box-shadow:0 24px 50px -22px #000c,0 0 0 1px #000;
+  user-select:none;-webkit-user-select:none;
+}
+.plug-acid *,.plug-acid *::before,.plug-acid *::after{box-sizing:border-box}
+
+/* ---------- buttons ---------- */
+.plug-acid .ac-btn{font:700 12px/1 var(--nar);letter-spacing:.08em;text-transform:uppercase;min-height:32px;padding:0 11px;
+  border-radius:5px;border:1px solid #000;background:linear-gradient(#3a3d41,#25272a);color:#cfd3cc;cursor:pointer;
+  box-shadow:0 1px 0 #ffffff14 inset,0 2px 3px #0008;transition:background .12s,color .12s,box-shadow .12s}
+.plug-acid .ac-btn:hover{background:linear-gradient(#45484d,#2c2f32);color:#fff}
+.plug-acid .ac-btn:active{transform:translateY(1px);box-shadow:0 1px 1px #0008}
+.plug-acid .ac-btn:focus-visible,.plug-acid .ac-dial:focus-visible,.plug-acid .ac-sel:focus-visible{outline:2px solid var(--acid);outline-offset:2px}
+.plug-acid .ac-btn.sm{min-width:32px;padding:0 6px;font-size:13px}
+.plug-acid .ac-btn.on{background:linear-gradient(#d6ff4a,#a9d61c);color:#141a00;border-color:#5d7409;box-shadow:0 0 12px var(--acidGlow),0 1px 0 #fff8 inset}
+.plug-acid .ac-tog.run.on{background:linear-gradient(#ff6a4a,#d43b1f);color:#fff;border-color:#6d1a0a;box-shadow:0 0 12px #ff5a3699,0 1px 0 #fff6 inset}
+.plug-acid .ac-btn.cue{animation:acBlink .5s steps(2) infinite;border-color:var(--acid);color:var(--acid)}
+@keyframes acBlink{50%{background:linear-gradient(#5a6b1a,#3a470d)}}
+.plug-acid .ac-row{display:flex;align-items:center;gap:5px}
+.plug-acid .ac-mini{font:700 10px/1 var(--nar);letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:0 0 6px 1px;white-space:nowrap}
+
+/* ---------- silver panel ---------- */
+.plug-acid .ac-panel{position:relative;padding:16px 26px 14px;color:var(--ink);
+  background:
+    repeating-linear-gradient(90deg,#ffffff0d 0 1px,#0000 1px 3px),
+    repeating-linear-gradient(90deg,#00000008 0 2px,#0000 2px 5px),
+    linear-gradient(180deg,var(--silverA),#cfd2d4 45%,var(--silverB));
+  border-bottom:3px solid #0a0a0a;box-shadow:0 1px 0 #fff inset}
+.plug-acid .ac-screw{position:absolute;width:11px;height:11px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fafafa,#9a9da0 60%,#6c6f72);box-shadow:0 1px 1px #0006,0 0 0 1px #0003}
+.plug-acid .ac-screw::after{content:"";position:absolute;left:2px;right:2px;top:5px;height:1.5px;background:#555a;transform:rotate(-30deg)}
+.plug-acid .ac-screw.tl{left:8px;top:8px}.plug-acid .ac-screw.tr{right:8px;top:8px}
+.plug-acid .ac-screw.bl{left:8px;bottom:8px}.plug-acid .ac-screw.br{right:8px;bottom:8px}
+.plug-acid .ac-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 20px;margin-bottom:10px}
+.plug-acid .ac-brand{display:flex;flex-direction:column;gap:2px}
+.plug-acid .ac-logo{font:900 34px/1 var(--sans);letter-spacing:-.02em;color:#141414;font-style:italic}
+.plug-acid .ac-logo span{font-style:normal;font-weight:800;font-size:20px;letter-spacing:.02em;margin-left:4px;color:#141414;
+  background:var(--acid);padding:1px 6px 2px;border-radius:3px;vertical-align:6px;box-shadow:0 0 0 1.5px #141414}
+.plug-acid .ac-tag{font:700 10.5px var(--nar);letter-spacing:.22em;text-transform:uppercase;color:var(--inkDim)}
+.plug-acid .ac-headr{display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap}
+.plug-acid .ac-panel .ac-mini{color:var(--inkDim)}
+.plug-acid .ac-seg{display:flex;border-radius:6px;overflow:hidden;border:1px solid #000;box-shadow:0 2px 3px #0005}
+.plug-acid .ac-seg .ac-btn{border:0;border-radius:0;box-shadow:none;min-width:46px;display:grid;place-items:center}
+.plug-acid .ac-seg .ac-btn+.ac-btn{border-left:1px solid #000}
+.plug-acid .ac-engine{font:700 11px/30px var(--mono);height:32px;padding:0 10px;border-radius:5px;background:#0d1004;color:var(--acid);
+  letter-spacing:.06em;box-shadow:inset 0 2px 6px #000,0 1px 0 #fff8;text-shadow:0 0 6px var(--acidGlow)}
+
+/* ---------- knobs ---------- */
+.plug-acid .ac-knobs{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;padding:12px 6px 4px;
+  border-top:1.5px solid #0002;position:relative}
+.plug-acid .ac-knob{display:flex;flex-direction:column;align-items:center;gap:3px;--v:.5}
+.plug-acid .ac-dial{position:relative;width:70px;height:70px;border-radius:50%;cursor:ns-resize;touch-action:none}
+.plug-acid .ac-ring{position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from 225deg,#1c1d1e calc(var(--v)*270deg),#0000 0 270deg,#0000 0);
+  -webkit-mask:radial-gradient(circle,#0000 29px,#000 30px,#000 34px,#0000 35px);mask:radial-gradient(circle,#0000 29px,#000 30px,#000 34px,#0000 35px)}
+.plug-acid .ac-dial::before{content:"";position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from 225deg,#0000002a 0 270deg,#0000 0);
+  -webkit-mask:radial-gradient(circle,#0000 29px,#000 30px,#000 34px,#0000 35px);mask:radial-gradient(circle,#0000 29px,#000 30px,#000 34px,#0000 35px)}
+.plug-acid .ac-knob.bip .ac-ring{background:conic-gradient(from 0deg,
+  #1c1d1e 0 max(0deg,calc((var(--v) - .5)*270deg)),#0000 0 calc(360deg + min(0deg,calc((var(--v) - .5)*270deg))),#1c1d1e 0)}
+.plug-acid .ac-cap{position:absolute;inset:9px;border-radius:50%;transform:rotate(calc(-135deg + var(--v)*270deg));
+  background:
+    radial-gradient(circle at 50% 50%,#2c2e30 0 52%,#0000 53%),
+    repeating-conic-gradient(#1a1b1c 0 6deg,#2a2c2e 6deg 12deg);
+  box-shadow:0 4px 7px #000a,0 1px 0 #fff4 inset,0 0 0 1px #000}
+.plug-acid .ac-cap::after{content:"";position:absolute;inset:7px;border-radius:50%;
+  background:radial-gradient(circle at 40% 30%,#4a4d50,#1d1e20 70%);box-shadow:inset 0 1px 1px #fff3}
+.plug-acid .ac-ptr{position:absolute;left:50%;top:3px;width:3px;height:17px;margin-left:-1.5px;border-radius:2px;background:#f4f4ef;z-index:1;box-shadow:0 0 3px #fff8}
+.plug-acid .ac-knob.drag .ac-ptr,.plug-acid .ac-dial:focus-visible .ac-ptr{background:var(--acid);box-shadow:0 0 6px var(--acid)}
+.plug-acid .ac-klabel{font:800 11.5px/1 var(--nar);letter-spacing:.14em;text-transform:uppercase;color:#17181a;margin-top:2px}
+.plug-acid .ac-kval{font:600 10.5px/1 var(--mono);color:var(--inkDim);min-height:12px;opacity:.85}
+.plug-acid .ac-knob.drag .ac-kval{color:#000;opacity:1}
+
+/* ---------- sequencer (black) ---------- */
+.plug-acid .ac-seq{flex:1;display:flex;flex-direction:column;gap:12px;padding:14px 18px 16px;
+  background:radial-gradient(120% 70% at 50% 0%,#202225,var(--blk) 70%)}
+.plug-acid .ac-bar{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:flex-end}
+.plug-acid .ac-grp{display:flex;flex-direction:column}
+.plug-acid .ac-grp.gen{margin-left:auto}
+.plug-acid .ac-edit .ac-grp.gen .ac-mini{margin-bottom:6px}
+.plug-acid .ac-banks{display:flex;gap:3px}
+.plug-acid .ac-bank{min-width:30px;padding:0;font-size:13px}
+.plug-acid .ac-lcd{min-width:42px;height:32px;padding:0 8px;display:grid;place-items:center;border-radius:4px;
+  font:700 15px var(--mono);color:var(--acid);background:#0a0c04;box-shadow:inset 0 2px 6px #000,0 0 0 1px #000;text-shadow:0 0 7px var(--acidGlow)}
+.plug-acid .ac-sel{height:32px;border-radius:5px;border:1px solid #000;background:#25272a;color:#e2e5de;font:600 13px var(--sans);padding:0 6px;width:118px}
+.plug-acid .ac-dens{display:flex;align-items:center;gap:6px;font:700 10px var(--nar);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.plug-acid .ac-range{width:64px;accent-color:var(--acid)}
+.plug-acid .ac-dv{font:600 11px var(--mono);color:var(--txt);min-width:32px}
+.plug-acid .ac-gen{background:linear-gradient(#d6ff4a,#a2cc17);color:#121800;border-color:#4f6207;box-shadow:0 0 14px #c6f43255,0 1px 0 #fff8 inset}
+.plug-acid .ac-gen:hover{background:linear-gradient(#e2ff74,#b4dc28);color:#000}
+
+/* ---------- grid ---------- */
+.plug-acid .ac-grid{display:grid;grid-template-columns:44px repeat(var(--cols),minmax(0,1fr));column-gap:3px;row-gap:0;
+  padding:8px 10px 10px;background:#0b0c0d;border-radius:8px;box-shadow:inset 0 2px 10px #000,0 0 0 1px #2a2d30;touch-action:none}
+.plug-acid .ac-rl{font:700 10px/1 var(--nar);letter-spacing:.1em;color:var(--dim);display:flex;align-items:center;justify-content:flex-end;padding-right:7px}
+.plug-acid .ac-rl.key{height:17px;border-radius:0 3px 3px 0;margin-right:3px;justify-content:flex-end;font-size:9.5px}
+.plug-acid .ac-rl.key.wht{background:linear-gradient(90deg,#d8d4ca,#f3efe6);color:#3a3a3a;border-bottom:1px solid #9a968e}
+.plug-acid .ac-rl.key.blk{background:linear-gradient(90deg,#050505,#2b2c2e);color:#8a8d90;width:72%;justify-self:end;border-bottom:1px solid #000}
+.plug-acid .ac-rl.key.c{font-weight:900;color:#000}
+.plug-acid .ac-rl.flag{height:24px}
+.plug-acid .ac-rl.flag.first,.plug-acid .ac-flag.first{margin-top:8px}
+.plug-acid .ac-ledc{display:flex;flex-direction:column;align-items:center;gap:3px;padding-bottom:6px}
+.plug-acid .ac-ledc span{font:600 9.5px var(--mono);color:#5d6158}
+.plug-acid .ac-ledc.beat span{color:#a6ab9f}
+.plug-acid .ac-led{width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#3c1d17,#1c0c09);box-shadow:inset 0 1px 2px #000,0 0 0 1px #000}
+.plug-acid .ac-ledc.play .ac-led{background:radial-gradient(circle at 40% 35%,#ffd2c4,#ff4a26 55%,#c22300);box-shadow:0 0 10px #ff4a26,0 0 3px #ff8a6d}
+.plug-acid .ac-ledc.off{opacity:.3}
+.plug-acid .ac-cell{height:17px;cursor:pointer;position:relative;border-bottom:1px solid #0b0c0d}
+.plug-acid .ac-cell.wht{background:#26292c}
+.plug-acid .ac-cell.blk{background:#17191b}
+.plug-acid .ac-cell.beat.wht{background:#2d3134}
+.plug-acid .ac-cell.beat.blk{background:#1c1f21}
+.plug-acid .ac-cell:hover{background:#3d4228}
+.plug-acid .ac-cell.sel{box-shadow:inset 1px 0 0 #c6f43255,inset -1px 0 0 #c6f43255}
+.plug-acid .ac-cell.pc{background:#3b3e31}
+.plug-acid .ac-cell.pc.blk{background:#2d3025}
+.plug-acid .ac-grid .ac-cell.on{background:linear-gradient(#e4ff7c,var(--acid) 45%,#9cc415);border-radius:3px;box-shadow:0 0 8px #c6f43266;z-index:1}
+.plug-acid .ac-grid .ac-cell.on.pc{background:linear-gradient(#fff,#e9ff9a 50%,var(--acid));box-shadow:0 0 14px var(--acid),0 0 3px #fff}
+.plug-acid .ac-grid .ac-cell.ghost{background:#3a4318;border-radius:3px;box-shadow:inset 0 0 0 1px #6f8420}
+.plug-acid .ac-cell.acc::after{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:#ff4a26;box-shadow:0 0 4px #ff4a26}
+.plug-acid .ac-cell.sld::before{content:"";position:absolute;right:-5px;top:50%;width:8px;height:3px;margin-top:-1.5px;background:var(--acid);border-radius:2px;box-shadow:0 0 4px var(--acid)}
+.plug-acid .ac-cell.off,.plug-acid .ac-flag.off{opacity:.22;pointer-events:none}
+.plug-acid .ac-flag{height:24px;display:grid;place-items:center;cursor:pointer;border-top:1px solid #0b0c0d}
+.plug-acid .ac-flag i{width:78%;max-width:30px;height:15px;border-radius:3px;background:linear-gradient(#34373b,#25282b);box-shadow:0 1px 0 #ffffff12 inset,0 1px 2px #000}
+.plug-acid .ac-flag:hover i{background:linear-gradient(#41454a,#2c2f33)}
+.plug-acid .ac-flag.on i{background:linear-gradient(#e0ff6e,var(--acid));box-shadow:0 0 8px #c6f43277}
+.plug-acid .ac-flag.f-acc.on i{background:linear-gradient(#ff8a6d,#ff4a26);box-shadow:0 0 8px #ff4a2688}
+.plug-acid .ac-flag.f-up.on i,.plug-acid .ac-flag.f-down.on i{background:linear-gradient(#f2f2ea,#bfc2b8);box-shadow:0 0 6px #fff4}
+.plug-acid .ac-flag.f-gate.on i{background:linear-gradient(#9fbb2a,#6d8510);box-shadow:none}
+
+/* ---------- step-edit keyboard ---------- */
+.plug-acid .ac-edit{display:flex;align-items:flex-end;gap:12px 16px;flex-wrap:wrap}
+.plug-acid .ac-sellab{min-width:92px;height:32px;display:flex;align-items:center;gap:8px;padding:0 10px;border-radius:4px;background:#0a0c04;
+  box-shadow:inset 0 2px 6px #000,0 0 0 1px #000;font:700 14px var(--mono);color:var(--acid);text-shadow:0 0 7px var(--acidGlow)}
+.plug-acid .ac-sellab b{color:#fff;font-weight:700;min-width:20px}
+.plug-acid .ac-kb{--kw:30px;--bw:20px;position:relative;display:flex;height:62px;padding:0;border-radius:0 0 5px 5px;
+  box-shadow:0 -3px 0 #000,0 3px 8px #000a;touch-action:none}
+.plug-acid .ac-key{cursor:pointer}
+.plug-acid .ac-key.wht{width:var(--kw);height:62px;background:linear-gradient(#e6e2d8,#fbf8f1 70%,#d9d4c8);border:1px solid #6b665e;border-top:0;border-radius:0 0 4px 4px;
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;font:700 9.5px var(--nar);color:#6d6a63}
+.plug-acid .ac-key.blk{position:absolute;top:0;width:var(--bw);height:38px;z-index:2;background:linear-gradient(#2b2c2e,#050505);border-radius:0 0 3px 3px;box-shadow:0 2px 3px #000a}
+.plug-acid .ac-key.wht:hover{background:linear-gradient(#eef5d6,#fbfff0)}
+.plug-acid .ac-key.blk:hover{background:linear-gradient(#3d4420,#121405)}
+.plug-acid .ac-key.wht.on{background:linear-gradient(#e9ff98,var(--acid));color:#1c2400;box-shadow:0 0 12px var(--acidGlow)}
+.plug-acid .ac-key.blk.on{background:linear-gradient(#d6ff4a,#86a812);box-shadow:0 0 12px var(--acidGlow)}
+.plug-acid .ac-key.ghost{outline:2px dashed #7d9c12;outline-offset:-4px}
+.plug-acid .ac-editr{display:flex;gap:5px;flex-wrap:wrap}
+.plug-acid .ac-editr .ac-tog{min-width:0;padding:0 9px}
+.plug-acid .ac-editr .ac-tog.acc.on{background:linear-gradient(#ff7a5a,#e0391a);color:#fff;border-color:#6d1a0a;box-shadow:0 0 12px #ff4a2688}
+
+@media (max-width:820px){
+  .plug-acid .ac-knobs{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:12px}
+  .plug-acid .ac-grp.gen{margin-left:0}
+  .plug-acid .ac-panel{padding:14px 16px}
+}

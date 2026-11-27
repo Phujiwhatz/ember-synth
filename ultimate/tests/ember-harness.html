@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ember Studio plugin harness</title>
+<link rel="stylesheet" href="../src/plugins/ember.css">
+<style>html{background:#0d0c0b}body{margin:0;padding:12px;background:#0d0c0b;color:#ccc;font:14px system-ui,sans-serif}#bar{margin-bottom:8px}#bar button{margin-right:6px}</style>
+</head>
+<body>
+<div id="bar"><button id="play">Play C major</button><button id="stop">Stop</button><span id="rms"></span></div>
+<div id="host"></div>
+<script src="mock-studio.js"></script>
+<script src="../src/plugins/ember.js"></script>
+<script>
+  window.__MANIFEST__ = {version:1, samples:[], kits:{}, instruments:{}};   // ember needs no samples
+  const noMount = /nomount/.test(location.search);
+  window.ready = MockStudio.boot('ember', noMount ? null : document.getElementById('host')).then(p => { window.P = p; return true; });
+  document.getElementById('play').onclick = () => { for (const n of [60,64,67]) P.noteOn(n, 0.8, Studio.ctx.currentTime, {ch:0, mpe:false}); };
+  document.getElementById('stop').onclick = () => { for (const n of [60,64,67]) P.noteOff(n, Studio.ctx.currentTime, {ch:0, mpe:false}); };
+  setInterval(() => { document.getElementById('rms').textContent = 'RMS ' + MockStudio.rms().toFixed(4); }, 200);
+</script>
+</body>
+</html>
