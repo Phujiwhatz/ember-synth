@@ -19,7 +19,7 @@ enum Kind { Kick = 0, Snare, Clap, ClosedHat, OpenHat, LowTom, HighTom, Cowbell 
 
 inline const char* trackName (int t)
 {
-    static const char* names[] = { "KICK", "SNARE", "CLAP", "CL HAT", "OP HAT", "LO TOM", "HI TOM", "COWBELL" };
+    static const char* names[] = { "KICK", "SNARE", "CLAP", "CL HAT", "OP HAT", "LO TOM", "HI TOM", "PERC" };
     return names[t];
 }
 
@@ -400,5 +400,79 @@ private:
     float freq[6]  {};
     float phase[6] {};
 };
+
+//==============================================================================
+// MIDI note -> track mapping (pure functions, tested headlessly)
+enum KeymapMode { KeymapEveryOctave = 0, KeymapGM = 1 };
+
+// "Every octave": C C# D D# E F F# G -> tracks 1-8 in every octave; G#..B ignored.
+inline int noteToTrackEveryOctave (int note) noexcept
+{
+    if (note < 0 || note > 127) return -1;
+    const int pc = note % 12;
+    return pc < kNumTracks ? pc : -1;
+}
+
+// General MIDI drum map
+inline int noteToTrackGM (int note) noexcept
+{
+    switch (note)
+    {
+        case 35: case 36:                   return Kick;
+        case 37: case 38: case 40:          return Snare;
+        case 39:                            return Clap;
+        case 42: case 44:                   return ClosedHat;
+        case 46:                            return OpenHat;
+        case 41: case 43: case 45:          return LowTom;
+        case 47: case 48: case 50:          return HighTom;
+        case 54: case 56: case 75: case 76: return Cowbell;   // track 8 = perc
+        default:                            return -1;
+    }
+}
+
+inline int noteToTrack (int note, int keymapMode) noexcept
+{
+    return keymapMode == KeymapGM ? noteToTrackGM (note) : noteToTrackEveryOctave (note);
+}
+
+//==============================================================================
+// Sequencer timeline. Step k (absolute 16th index) sounds at k * 0.25 quarter notes,
+// odd steps delayed by the swing amount (in quarter notes).
+inline double stepTimePpq (long long k, double swingDelayPpq) noexcept
+{
+    return (double) k * 0.25 + ((k & 1) ? swingDelayPpq : 0.0);
+}
+
+inline int stepIndexInPattern (long long k) noexcept
+{
+    return (int) (((k % kNumSteps) + kNumSteps) % kNumSteps);
+}
+
+// Which absolute step a live hit at hitPpq is recorded on.
+//   quantize = true : nearest step (swing-aware)
+//   quantize = false: the step whose window the hit falls in (latest step at or before the hit)
+inline long long recordStepFor (double hitPpq, double swingDelayPpq, bool quantize) noexcept
+{
+    const long long k0 = (long long) std::floor (hitPpq / 0.25);
+    const double eps = 1.0e-9;
+
+    if (! quantize)
+    {
+        // Swing can push step k0 (if odd) after the hit; then the hit belongs to k0 - 1.
+        for (long long k = k0 + 1; k >= k0 - 2; --k)
+            if (stepTimePpq (k, swingDelayPpq) <= hitPpq + eps)
+                return k;
+        return k0 - 2;
+    }
+
+    long long best = k0;
+    double bestDist = 1.0e30;
+    for (long long k = k0 - 1; k <= k0 + 2; ++k)
+    {
+        const double d = std::abs (stepTimePpq (k, swingDelayPpq) - hitPpq);
+        if (d < bestDist - eps) { bestDist = d; best = k; }
+    }
+    return best;
+}
 
 } // namespace drums

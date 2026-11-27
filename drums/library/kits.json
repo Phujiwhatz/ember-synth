@@ -1,0 +1,556 @@
+{
+  "kits": [
+    {
+      "name": "808 Classic",
+      "tracks": [
+        {
+          "sound": "synth",
+          "level": 0.9,
+          "tune": 0,
+          "decay": 0.65,
+          "tone": 0.4,
+          "pan": 0.0
+        },
+        {
+          "sound": "builtin:Snares/Classic 808 Snare.wav",
+          "level": 0.8,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.0
+        },
+        {
+          "sound": "builtin:Claps/808 Clap.wav",
+          "level": 0.75,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.1
+        },
+        {
+          "sound": "builtin:Hats/808 Closed Hat.wav",
+          "level": 0.65,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.2
+        },
+        {
+          "sound": "builtin:Hats/808 Open Hat.wav",
+          "level": 0.6,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.2
+        },
+        {
+          "sound": "synth",
+          "level": 0.75,
+          "tune": 0,
+          "decay": 0.55,
+          "tone": 0.5,
+          "pan": -0.25
+        },
+        {
+          "sound": "synth",
+          "level": 0.75,
+          "tune": 0,
+          "decay": 0.5,
+          "tone": 0.5,
+          "pan": 0.25
+        },
+        {
+          "sound": "builtin:Percussion/808 Cowbell.wav",
+          "level": 0.6,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": -0.15
+        }
+      ]
+    },
+    {
+      "name": "909 House",
+      "tracks": [
+        {
+          "sound": "builtin:Kicks/Punchy 909.wav",
+          "level": 0.9,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.0
+        },
+        {
+          "sound": "builtin:Snares/Tight 909.wav",
+          "level": 0.75,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.0
+        },
+        {
+          "sound": "builtin:Claps/909 Clap.wav",
+          "level": 0.75,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.1
+        },
+        {
+          "sound": "builtin:Hats/909 Closed Hat.wav",
+          "level": 0.6,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.2
+        },
+        {
+          "sound": "builtin:Hats/909 Open Hat.wav",
+          "level": 0.55,
+          "tune": 0,
+          "decay": 0.6,
+          "tone": 1.0,
+          "pan": 0.2
+        },
+        {
+          "sound": "builtin:Toms/909 Low Tom.wav",
+          "level": 0.7,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": -0.25
+        },
+        {
+          "sound": "builtin:Toms/909 High Tom.wav",
+          "level": 0.7,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.25
+        },
+        {
+          "sound": "builtin:Percussion/Shaker.wav",
+          "level": 0.5,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": -0.15
+        }
+      ]
+    },
+    {
+      "name": "Trap",
+      "tracks": [
+        {
+          "sound": "builtin:Kicks/Trap Sub Kick.wav",
+          "level": 0.9,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.0
+        },
+        {
+          "sound": "builtin:Snares/Trap Snare.wav",
+          "level": 0.8,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.0
+        },
+        {
+          "sound": "builtin:Claps/Trap Clap.wav",
+          "level": 0.75,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.1
+        },
+        {
+          "sound": "builtin:Hats/Trap Hat Tick.wav",
+          "level": 0.6,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.2
+        },
+        {
+          "sound": "builtin:Hats/Trap Open Hat.wav",
+          "level": 0.55,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.2
+        },
+        {
+          "sound": "builtin:Toms/808 Low Tom.wav",
+          "level": 0.7,
+          "tune": -2,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": -0.25
+        },
+        {
+          "sound": "builtin:Toms/808 High Tom.wav",
+          "level": 0.7,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.25
+        },
+        {
+          "sound": "builtin:Percussion/808 Rimshot.wav",
+          "level": 0.6,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": -0.15
+        }
+      ]
+    },
+    {
+      "name": "Lo-Fi Boom Bap",
+      "tracks": [
+        {
+          "sound": "builtin:Kicks/Boom Bap Thump.wav",
+          "level": 0.9,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.0
+        },
+        {
+          "sound": "builtin:Snares/Boom Bap Crack.wav",
+          "level": 0.8,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.0
+        },
+        {
+          "sound": "builtin:Claps/Dusty Lo-Fi Clap.wav",
+          "level": 0.7,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.1
+        },
+        {
+          "sound": "builtin:Hats/Dusty Lo-Fi Hat.wav",
+          "level": 0.6,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.2
+        },
+        {
+          "sound": "builtin:Hats/Dusty Lo-Fi Open Hat.wav",
+          "level": 0.55,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.2
+        },
+        {
+          "sound": "builtin:Toms/Dusty Lo-Fi Tom.wav",
+          "level": 0.7,
+          "tune": -3,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": -0.25
+        },
+        {
+          "sound": "builtin:Toms/Dusty Lo-Fi Tom.wav",
+          "level": 0.7,
+          "tune": 4,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.25
+        },
+        {
+          "sound": "builtin:Percussion/Tambourine.wav",
+          "level": 0.5,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 0.8,
+          "pan": -0.15
+        }
+      ]
+    },
+    {
+      "name": "Techno",
+      "tracks": [
+        {
+          "sound": "builtin:Kicks/Techno Rumble.wav",
+          "level": 0.95,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.0
+        },
+        {
+          "sound": "builtin:Snares/Techno Snare.wav",
+          "level": 0.7,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.0
+        },
+        {
+          "sound": "builtin:Claps/Techno Clap.wav",
+          "level": 0.75,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.1
+        },
+        {
+          "sound": "builtin:Hats/Techno Hat.wav",
+          "level": 0.6,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.2
+        },
+        {
+          "sound": "builtin:Hats/Techno Open Hat.wav",
+          "level": 0.6,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.2
+        },
+        {
+          "sound": "builtin:Toms/909 Low Tom.wav",
+          "level": 0.65,
+          "tune": -2,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": -0.25
+        },
+        {
+          "sound": "builtin:Toms/909 High Tom.wav",
+          "level": 0.65,
+          "tune": 2,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.25
+        },
+        {
+          "sound": "builtin:Percussion/Metal Ping.wav",
+          "level": 0.5,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": -0.15
+        }
+      ]
+    },
+    {
+      "name": "Acoustic-ish",
+      "tracks": [
+        {
+          "sound": "builtin:Kicks/Acoustic Kick.wav",
+          "level": 0.9,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.0
+        },
+        {
+          "sound": "builtin:Snares/Acoustic Snare.wav",
+          "level": 0.8,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.0
+        },
+        {
+          "sound": "builtin:Claps/Finger Snap.wav",
+          "level": 0.65,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.1
+        },
+        {
+          "sound": "builtin:Hats/Acoustic Closed Hat.wav",
+          "level": 0.6,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.2
+        },
+        {
+          "sound": "builtin:Hats/Acoustic Open Hat.wav",
+          "level": 0.55,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.2
+        },
+        {
+          "sound": "builtin:Toms/Acoustic Floor Tom.wav",
+          "level": 0.75,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": -0.25
+        },
+        {
+          "sound": "builtin:Toms/Acoustic Rack Tom.wav",
+          "level": 0.75,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.25
+        },
+        {
+          "sound": "builtin:Cymbals/Ride.wav",
+          "level": 0.5,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": -0.15
+        }
+      ]
+    },
+    {
+      "name": "Electro",
+      "tracks": [
+        {
+          "sound": "builtin:Kicks/Electro Kick.wav",
+          "level": 0.9,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.0
+        },
+        {
+          "sound": "builtin:Snares/Electro Snare.wav",
+          "level": 0.75,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.0
+        },
+        {
+          "sound": "builtin:Claps/Tight Clap.wav",
+          "level": 0.7,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.1
+        },
+        {
+          "sound": "builtin:Hats/Electro Hat.wav",
+          "level": 0.6,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.2
+        },
+        {
+          "sound": "builtin:Hats/Techno Open Hat.wav",
+          "level": 0.55,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.2
+        },
+        {
+          "sound": "builtin:Toms/Syndrum Zap Tom.wav",
+          "level": 0.7,
+          "tune": -5,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": -0.25
+        },
+        {
+          "sound": "builtin:Toms/Syndrum Zap Tom.wav",
+          "level": 0.7,
+          "tune": 5,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.25
+        },
+        {
+          "sound": "builtin:FX/Laser Zap.wav",
+          "level": 0.5,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": -0.15
+        }
+      ]
+    },
+    {
+      "name": "Percussion Jam",
+      "tracks": [
+        {
+          "sound": "builtin:Kicks/Soft Felt Kick.wav",
+          "level": 0.85,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.0
+        },
+        {
+          "sound": "builtin:Percussion/Woody Rimshot.wav",
+          "level": 0.75,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.0
+        },
+        {
+          "sound": "builtin:Claps/Finger Snap.wav",
+          "level": 0.65,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.1
+        },
+        {
+          "sound": "builtin:Percussion/Shaker.wav",
+          "level": 0.6,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.2
+        },
+        {
+          "sound": "builtin:Percussion/Tambourine.wav",
+          "level": 0.55,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.2
+        },
+        {
+          "sound": "builtin:Percussion/Low Conga.wav",
+          "level": 0.8,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": -0.25
+        },
+        {
+          "sound": "builtin:Percussion/High Conga.wav",
+          "level": 0.8,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": 0.25
+        },
+        {
+          "sound": "builtin:Percussion/Agogo.wav",
+          "level": 0.6,
+          "tune": 0,
+          "decay": 0.98,
+          "tone": 1.0,
+          "pan": -0.15
+        }
+      ]
+    }
+  ]
+}

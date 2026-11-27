@@ -38,14 +38,20 @@ juce_add_plugin(Pulse16
     NEEDS_MIDI_INPUT TRUE
     NEEDS_MIDI_OUTPUT FALSE
     IS_MIDI_EFFECT FALSE
-    EDITOR_WANTS_KEYBOARD_FOCUS FALSE
+    EDITOR_WANTS_KEYBOARD_FOCUS TRUE
     AU_MAIN_TYPE kAudioUnitType_MusicDevice
     VST3_CATEGORIES Instrument Drum
     COPY_PLUGIN_AFTER_BUILD FALSE)
 
+# Built-in sound library + kits (BinaryData::library_zip, BinaryData::kits_json)
+juce_add_binary_data(Pulse16Data SOURCES
+    library/library.zip
+    library/kits.json)
+
 target_sources(Pulse16 PRIVATE
     Source/PluginProcessor.cpp
-    Source/PluginEditor.cpp)
+    Source/PluginEditor.cpp
+    Source/Library.cpp)
 
 target_compile_definitions(Pulse16 PUBLIC
     JUCE_WEB_BROWSER=0
@@ -55,6 +61,7 @@ target_compile_definitions(Pulse16 PUBLIC
 
 target_link_libraries(Pulse16
     PRIVATE
+        Pulse16Data
         juce::juce_audio_utils
         juce::juce_audio_formats
     PUBLIC
