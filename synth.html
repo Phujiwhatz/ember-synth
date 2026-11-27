@@ -54,6 +54,9 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Archivo",syst
 .layer .bset{display:flex;gap:6px;align-items:center}
 .layer input[type=range]{width:90px;accent-color:#ec4a2c}
 .slotinfo{font:500 14px "Archivo Narrow",sans-serif;color:light-dark(#6b6155,#9a9184);flex-basis:100%;margin-top:-2px}
+.slotinfo.on{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;padding:8px 8px 8px 14px;border:1px solid #ec4a2c;border-radius:12px;background:light-dark(#fff1ec,#2a1712);color:var(--ink);font-size:15px}
+.slotinfo.on button{font:700 15px "Archivo Narrow",sans-serif;min-height:40px;border-radius:20px;border:0;background:#ec4a2c;color:#fff;padding:0 16px;cursor:pointer}
+.tab .sl{font:700 13px/1 "Archivo Narrow",sans-serif;background:#ec4a2c;color:#fff;border-radius:9px;padding:3px 7px}
 .slotinfo b{color:var(--ink)}
 
 /* ---------- instrument frame ---------- */
@@ -72,6 +75,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Archivo",syst
 select,button{font:600 16px "Archivo Narrow",sans-serif;background:var(--ctl);color:var(--ctlInk);border:1px solid var(--line);border-radius:6px;min-height:44px;padding:0 12px}
 select:focus-visible,button:focus-visible,.knob:focus-visible,.fader:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 button{cursor:pointer}button:hover{border-color:var(--dim)}
+#audioSetup{align-self:flex-start;min-height:36px;font-size:14px;border-color:var(--accent);color:var(--accent)}
 #popout{align-self:flex-start;min-height:40px;font-size:15px;border-color:var(--accent);color:var(--accent)}
 .midi{display:flex;align-items:center;gap:8px;font:500 14px "Archivo Narrow",sans-serif;color:var(--label)}
 .led{width:10px;height:10px;border-radius:50%;background:#0006;flex:none;transition:background .05s}
@@ -201,6 +205,7 @@ label.f{font:600 13px "Archivo Narrow",sans-serif;color:var(--dim);display:flex;
       <p id="tag"></p>
       <div class="midi"><span class="led" id="led"></span><span id="midiStatus">MIDI: waiting for power</span></div>
       <button id="popout" hidden>Open in new tab for MIDI ↗</button>
+      <button id="audioSetup" hidden>⚙ Audio &amp; MIDI settings</button>
     </div>
     <div class="scope"><canvas id="scope"></canvas></div>
     <div class="ctrl">
@@ -229,6 +234,20 @@ const clamp = (v,a,b) => Math.min(b, Math.max(a, v));
 const mtof = n => 440*Math.pow(2,(n-69)/12);
 const esc = x => String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let ctx = null;
+/* running inside the Ember Studio plugin (JUCE web view)? Then the C++ engine makes the sound. */
+// Velocity → loudness. 'Velocity' sets the range: 0 = none, 30% ≈ 15 dB, 60% ≈ 25 dB, 100% = 36 dB.
+// Full-force notes stay at full level; softer notes drop off like a piano.
+function velGain(vel, sens){ if(!(sens>0)) return 1; const range = 36*Math.pow(sens,0.7), x = Math.min(1,Math.max(0,vel/127));
+ return Math.pow(10, -range*Math.pow(1-x,1.4)/20); }
+const PLUGIN = !!(window.__JUCE__ && window.__JUCE__.backend);
+const TICK = {scope:null, keys:[], meter:[-1,-1], pos:[0,0], rotor:[[0.8,0.7],[0.8,0.7]]};
+const bridge = {
+ emit(id, o){ if(PLUGIN) window.__JUCE__.backend.emitEvent(id, o); },
+ note(k, v, on){ this.emit('note', {key:k, vel:v, on}); },
+ panic(){ this.emit('panic', {}); },
+ t:0, sync(){ if(!PLUGIN) return; clearTimeout(this.t); this.t = setTimeout(()=>this.emit('state', {json: JSON.stringify(studioState())}), 15); },
+ saveUser(u){ this.emit('saveUser', {json: JSON.stringify(u)}); }
+};
 const M = {};                       // master nodes
 const gn = val => { const g = ctx.createGain(); g.gain.value = val; return g; };
 const cs = val => { const c = ctx.createConstantSource(); c.offset.value = val; return c; };
@@ -343,6 +362,7 @@ const activeSlots = () => mode === 'single' ? [slots[0]] : slots;
 
 /* ---------- audio graph ---------- */
 async function initAudio(){
+ if(PLUGIN) return;
  ctx = new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
  M.bend = cs(0); M.bend.start();
  M.mix = gn(1);
@@ -355,6 +375,7 @@ async function initAudio(){
  for(const s of slots) buildSlot(s);
 }
 function buildSlot(s){
+ if(PLUGIN){ bridge.sync(); return; }
  if(!ctx) return;
  if(!s.n){
   const n = s.n = {};
@@ -392,7 +413,7 @@ function startVoice(s, key, vel, ch, t, overlap){
  vp.connect(pa); pa.connect(pamp.gain); vca.connect(pamp); pamp.connect(s.inst.in);
  v.ctl.push(vb, vp, vt);
  Object.assign(v, {vdet, vb, vp, vt, vvib, vca, pamp});
- const velG = (1-P.velSens) + P.velSens*Math.pow(vel/127, 1.6);
+ const velG = velGain(vel, P.velSens);
  v.h = INSTR[s.instr].voice(s, {v, f, note, vel, velG, t, glideFrom:gf, ratio: gf ? gf/f : 1, pitch:vdet, press:vp, timbre:vt, out:vca, P});
  v.srcs.push(...(v.h.srcs||[])); v.tune.push(...(v.h.tune||[]));
  for(const c of v.ctl) c.start(t);
@@ -508,14 +529,16 @@ function arpTick(s){
 const keySlots = new Map();   // key -> slots it went to, so note-off matches note-on
 function targets(key){ return mode==='single' ? [slots[0]] : mode==='layer' ? slots : [key < splitNote ? slots[1] : slots[0]]; }
 function noteOn(key, vel, ch=0){
- if(!ctx || ctx.state !== 'running') return;
  if(learnSplit){ splitNote = key; learnSplit = false; saveState(); renderTop(); return; }
+ if(PLUGIN){ bridge.note(key, vel, true); keyLight(key, true); return; }
+ if(!ctx || ctx.state !== 'running') return;
  if(isMember(ch)){ chPress[ch] = 0; if(!mpeSeen){ mpeSeen = true; updateMidiLabel(); } }
  const ts = targets(key); keySlots.set(key+':'+ch, ts);
  for(const s of ts) slotNoteOn(s, key, vel, ch);
  keyLight(key, true);
 }
 function noteOff(key, ch=0){
+ if(PLUGIN){ bridge.note(key, 0, false); keyLight(key, false); return; }
  if(!ctx) return;
  const ts = keySlots.get(key+':'+ch) || targets(key); keySlots.delete(key+':'+ch);
  for(const s of ts) slotNoteOff(s, key, ch);
@@ -530,6 +553,7 @@ function setSustain(on){
  }
 }
 function panic(){
+ if(PLUGIN){ bridge.panic(); document.querySelectorAll('.kb .on').forEach(k=>k.classList.remove('on')); return; }
  if(!ctx) return; sustain = false;
  for(const s of slots){ s.mono.stack = []; arpClear(s); for(const v of s.voices) release(v, ctx.currentTime, 0.02); }
  chBend.fill(0); chPress.fill(0); chTimbre.fill(0); M.bend.offset.setValueAtTime(0, ctx.currentTime);
@@ -571,6 +595,7 @@ let midiNames = '';
 function updateMidiLabel(){ const st = $('#midiStatus'); if(st && ctx) st.textContent = midiNames ? 'MIDI: ' + midiNames + (mpeSeen && DEVP.mpeMode==='auto' ? ' · MPE active' : '') : 'MIDI: no keyboard found — plug one in'; }
 async function initMidi(){
  const st = $('#midiStatus');
+ if(PLUGIN){ st.textContent = 'MIDI: from your DAW track'; $('#led').classList.add('ok'); return; }
  if(!navigator.requestMIDIAccess){ st.textContent = 'MIDI not supported in this browser — use Chrome, Edge, Opera or Firefox'; return; }
  try{
   const acc = await navigator.requestMIDIAccess({sysex:false});
@@ -1293,7 +1318,8 @@ defineInstrument({
   const P = s.P, tb = buildTable(WT_TABLES[P.wtTable] ? P.wtTable : 'basic');
   cx.fillStyle = '#0a0a1a'; cx.fillRect(0,0,w,h);
   // live position: base + morph envelope of the newest playing voice
-  let pos = P.wtPos; const v = s.voices.filter(v=>!v.dead && !v.rel).pop();
+  let pos = P.wtPos; const v = PLUGIN ? null : s.voices.filter(v=>!v.dead && !v.rel).pop();
+  if(PLUGIN) pos = clamp(pos + (TICK.pos[s.i]||0), 0, 1);
   if(v && ctx){ const i = v.h.posInfo, dt = ctx.currentTime - i.t0; const e = dt < i.A ? dt/i.A : i.S + (1-i.S)*Math.exp(-(dt-i.A)/(i.D/3)); pos = clamp(pos + i.amt*e, 0, 1); }
   const rows = 16, ox = w*0.08, oy = h*0.82, dx = w*0.022, dy = -h*0.032, ww = w*0.62, amp = h*0.16;
   for(let r=rows-1;r>=0;r--){
@@ -1358,7 +1384,8 @@ defineInstrument({
    {k:'percDecay',type:'sel',opts:[['fast','Fast decay'],['slow','Slow decay']],aria:'Percussion decay'},
    {k:'percVol',type:'sel',opts:[['normal','Normal'],['soft','Soft']],aria:'Percussion volume'},
    {k:'click',l:'Key click',min:0,max:1,fmt:pct},
-   {k:'orgRel',l:'Release',min:0.01,max:1.5,exp:2,fmt:ms}]],
+   {k:'orgRel',l:'Release',min:0.01,max:1.5,exp:2,fmt:ms},
+   {k:'velSens',l:'Velocity',min:0,max:1,fmt:pct}]],
   ['Vibrato & tone', [
    {k:'scan',type:'sel',opts:[['off','Scanner off'],['V1','Vibrato 1'],['V2','Vibrato 2'],['V3','Vibrato 3'],['C1','Chorus 1'],['C2','Chorus 2'],['C3','Chorus 3']],aria:'Vibrato and chorus',live:true},
    {k:'orgDrive',l:'Tube drive',min:0,max:1,fmt:pct,live:true},
@@ -1436,7 +1463,7 @@ defineInstrument({
   return h;
  },
  screen(cx, w, h, s){
-  const x = s.inst, P = s.P;
+  const P = s.P, x = PLUGIN ? (s._scr ||= {speed:{horn:0.8, drum:0.7, ang:[0,0], last:0}}) : s.inst;
   cx.fillStyle = '#1b0f08'; cx.fillRect(0,0,w,h);
   // drawbar strip
   const bw = Math.min(16, w*0.022), gap = bw*0.7, x0 = 14;
@@ -1447,10 +1474,11 @@ defineInstrument({
    cx.fillRect(xx, 10+len-bw*1.4, bw, bw*1.4);
   }
   // rotary indicators: angle integrates the (ramping) rotor speed
-  if(x && ctx){
+  if(x && (ctx || PLUGIN)){
    const now = performance.now()/1000, dt = Math.min(0.1, now - (x.speed.last||now)); x.speed.last = now;
-   const tg = x.target || [0,0];
-   x.speed.horn += (tg[0]-x.speed.horn)*Math.min(1, dt/0.45); x.speed.drum += (tg[1]-x.speed.drum)*Math.min(1, dt/1.8);
+   if(PLUGIN){ x.speed.horn = TICK.rotor[s.i]?.[0] ?? 0.8; x.speed.drum = TICK.rotor[s.i]?.[1] ?? 0.7; }
+   else { const tg = x.target || [0,0];
+   x.speed.horn += (tg[0]-x.speed.horn)*Math.min(1, dt/0.45); x.speed.drum += (tg[1]-x.speed.drum)*Math.min(1, dt/1.8); }
    x.speed.ang[0] += x.speed.horn*dt*2*Math.PI; x.speed.ang[1] += x.speed.drum*dt*2*Math.PI;
    const cy = h/2, r = Math.min(h*0.32, w*0.08);
    [[w*0.46, 'HORN', x.speed.ang[0], x.speed.horn],[w*0.46 + r*2.6, 'DRUM', x.speed.ang[1], x.speed.drum]].forEach(([cxp,lab,a,sp])=>{
@@ -1468,7 +1496,7 @@ defineInstrument({
 /* ================= Ensemble 70 — string machine with ensemble chorus and phaser ================= */
 const VOWEL_F = {ah:[[700,1],[1220,0.5],[2600,0.28]], oo:[[300,1],[870,0.45],[2240,0.2]], ee:[[270,1],[2290,0.4],[3010,0.3]], oh:[[450,1],[800,0.55],[2830,0.2]]};
 const strBase = {lvl16:0.3,lvl8:0.8,lvlViola:0.3,lvl4:0.5,choir:0,vowel:'ah',drift:6,bright:3200,keyTrack:0.4,bow:0.6,
- aA:0.35,aS:1,aR:1.2,velSens:0.2,ensDepth:0.8,ensMix:0.85,phRate:0.25,phDepth:0,phMix:0,lfoVib:0,modVib:25,lfoRate:5,
+ aA:0.35,aS:1,aR:1.2,velSens:0.35,ensDepth:0.8,ensMix:0.85,phRate:0.25,phDepth:0,phMix:0,lfoVib:0,modVib:25,lfoRate:5,
  chorus:0,dMix:0.06,rMix:0.4,rSize:4.5,drive:0.05,pressBright:0.5};
 const SP = (cat, name, p) => [cat, name, p];
 const STR_PRESETS = [
@@ -1657,6 +1685,7 @@ function setParam(k, v){
  if(k==='arpMode' && !arpActive(s)) arpClear(s);
  if(k==='arpHold' && s.P.arpHold==='off'){ s.arp.held = s.arp.held.filter(x=>x.down); if(!s.arp.held.length) arpStop(s); }
  if(ctx && s.inst) slotLive(s, k);
+ bridge.sync();
  if(k==='fEnv' || k==='cutoff') filtHint();
  if(INSTR[s.instr].theme==='fm' || k==='wtPos') drawScreenSoon();
 }
@@ -1686,7 +1715,8 @@ function filtHint(){
 /* ---------- studio bar: tabs, layer / split ---------- */
 function renderTop(){
  const s = edS();
- $('#tabs').innerHTML = INSTR_ORDER.map(id=>`<button class="tab" role="tab" aria-selected="${s.instr===id}" data-i="${id}"><i style="background:${TAB_COLOR[id]}"></i>${esc(INSTR[id].name)}</button>`).join('');
+ const badge = id => mode==='single' ? '' : ['A','B'].filter((_,i)=>slots[i].instr===id).map(l=>`<b class="sl" title="Playing in slot ${l}">${l}</b>`).join('');
+ $('#tabs').innerHTML = INSTR_ORDER.map(id=>`<button class="tab" role="tab" aria-selected="${s.instr===id}" data-i="${id}"><i style="background:${TAB_COLOR[id]}"></i>${esc(INSTR[id].name)}${badge(id)}</button>`).join('');
  $('#mode').value = mode;
  const multi = mode !== 'single';
  $('#slotBtns').hidden = !multi; $('#bCtl').hidden = !multi; $('#splitBtn').hidden = mode !== 'split';
@@ -1694,7 +1724,9 @@ function renderTop(){
  $('#bVol').value = bVol; $('#bOct').value = bOct;
  $('#splitBtn').textContent = learnSplit ? 'Press a key…' : 'Split at ' + noteName(splitNote);
  const nm = x => `<b>${esc(INSTR[x.instr].name)}</b> · ${esc(x.cur?.name||'')}`;
- $('#slotInfo').innerHTML = multi ? (mode==='layer' ? `Layer: A ${nm(slots[0])} + B ${nm(slots[1])}` : `Split: B ${nm(slots[1])} below ${noteName(splitNote)}, A ${nm(slots[0])} above`) + ` — editing <b>${editSlot ? 'B' : 'A'}</b>` : '';
+ $('#slotInfo').innerHTML = multi ? `<span>${mode==='layer' ? `<b>Layer is on</b> — every key plays two instruments: A ${nm(slots[0])} + B ${nm(slots[1])}` : `<b>Split is on</b> — B ${nm(slots[1])} below ${noteName(splitNote)}, A ${nm(slots[0])} above`}. The tabs change the slot you're editing (<b>${editSlot ? 'B' : 'A'}</b>).</span><button id="toSingle">Back to single</button>` : '';
+ $('#slotInfo').classList.toggle('on', multi);
+ $('#toSingle')?.addEventListener('click', () => { mode = 'single'; editSlot = 0; panic(); renderPanel(); saveState(); });
  buildKbMarks();
 }
 const noteName = n => ['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'][n%12] + (Math.floor(n/12)-1);
@@ -1703,7 +1735,7 @@ $('#tabs').addEventListener('keydown', e => { if(e.key!=='ArrowRight' && e.key!=
 $('#mode').onchange = e => { mode = e.target.value; if(mode==='single') editSlot = 0; panic(); renderPanel(); saveState(); e.target.blur(); };
 $('#editA').onclick = () => { editSlot = 0; renderPanel(); saveState(); };
 $('#editB').onclick = () => { editSlot = 1; renderPanel(); saveState(); };
-$('#bVol').oninput = e => { bVol = +e.target.value; if(ctx) slotLive(slots[1]); saveState(); };
+$('#bVol').oninput = e => { bVol = +e.target.value; if(ctx && !PLUGIN) slotLive(slots[1]); saveState(); };
 $('#bOct').onchange = e => { bOct = +e.target.value; saveState(); e.target.blur(); };
 $('#splitBtn').onclick = () => { learnSplit = !learnSplit; renderTop(); };
 function setInstrument(s, id){
@@ -1718,7 +1750,7 @@ function setInstrument(s, id){
 let USER = store.get('ember-studio-user', null);
 if(!USER){ USER = (store.get('ember-user', [])||[]).filter(u=>u && u.name && u.p).map(u=>({instr:'ember', name:u.name, cat:u.cat||'Utility', p:u.p})); store.set('ember-studio-user', USER); }
 USER = USER.filter(u=>u && INSTR[u.instr] && typeof u.name==='string' && u.p && typeof u.p==='object');
-const saveUser = () => store.set('ember-studio-user', USER);
+const saveUser = () => { bridge.saveUser(USER); return store.set('ember-studio-user', USER) || PLUGIN; };
 const allPatches = id => INSTR[id].presets.map(([cat,name,p])=>({cat,name,p,user:false})).concat(USER.filter(u=>u.instr===id).map(u=>({cat:INSTR[id].cats.includes(u.cat)?u.cat:INSTR[id].cats[INSTR[id].cats.length-1],name:u.name,p:u.p,user:true})));
 const same = (a,b) => a && b && a.name===b.name && a.user===b.user;
 function loadPatch(s, e, rebuild){
@@ -1796,7 +1828,11 @@ $('#saveForm').addEventListener('submit', e => {
  s.cur = {cat:entry.cat, name, p, user:true}; s.dirty = false; patchLabel(); renderTop(); closeDlgs(); saveState();
  const last = store.get('ember-studio-last', {}); last[s.instr] = {name, user:true}; store.set('ember-studio-last', last);
 });
+function studioState(){
+ return {mode, splitNote, bVol, bOct, editSlot, dev:DEVP, slots: slots.map(s=>({instr:s.instr, P:s.P, cur: s.cur ? {name:s.cur.name, cat:s.cur.cat, user:!!s.cur.user} : null, dirty:!!s.dirty}))};
+}
 function saveState(){
+ bridge.sync();
  store.set('ember-studio-state', {mode, editSlot, splitNote, bVol, bOct, slots: slots.map(s=>({instr:s.instr, patch: s.cur ? {name:s.cur.name, user:s.cur.user} : null}))});
 }
 
@@ -1852,18 +1888,21 @@ function draw(){
  // filter meter
  const fb = $('#fbarI'), fv = $('#fval');
  if(fb){ let hzv = s.P.cutoff, live = false; for(let i=s.voices.length-1;i>=0;i--){ const v = s.voices[i]; if(!v.dead && !v.killed && v.h.meter){ hzv = v.h.meter(); live = true; break; } }
+  if(PLUGIN && TICK.meter[editSlot] > 0){ hzv = TICK.meter[editSlot]; live = true; }
   hzv = clamp(hzv,20,20000); fb.style.width = (Math.log(hzv/20)/Math.log(1000)*100).toFixed(1)+'%'; fv.textContent = live ? hz(hzv) : 'Play a note'; }
- if(!ctx) return;
+ if(PLUGIN){ if(!TICK.scope) return; buf = TICK.scope; }
+ else { if(!ctx) return;
  if(!buf) buf = new Float32Array(M.an.fftSize);
- M.an.getFloatTimeDomainData(buf);
+ M.an.getFloatTimeDomainData(buf); }
  let st = 0; for(let i=1;i<buf.length/2;i++) if(buf[i-1]<0 && buf[i]>=0){ st = i; break; }
- const [rx,ry,rw,rh] = reg, N = 1024; cx.beginPath();
+ const [rx,ry,rw,rh] = reg, N = Math.min(1024, buf.length - st); cx.beginPath();
  for(let i=0;i<N;i++){ const xx = rx + i/(N-1)*rw, yy = ry + rh/2 - buf[st+i]*rh*0.45; i ? cx.lineTo(xx,yy) : cx.moveTo(xx,yy); }
  cx.strokeStyle = col; cx.lineWidth = 2; cx.shadowColor = col; cx.shadowBlur = 10; cx.stroke(); cx.shadowBlur = 0;
 }
 
 /* ---------- pop-out for embeds ---------- */
-if(EMBEDDED) $('#popout').hidden = false;
+if(EMBEDDED && !PLUGIN) $('#popout').hidden = false;
+if(PLUGIN){ const hl = $('#homeLink'); if(hl) hl.hidden = true; }
 $('#popout').onclick = () => { let w = null; try{ w = window.open(URL.createObjectURL(new Blob([SRC],{type:'text/html'})), '_blank'); }catch(_){} if(!w) $('#midiStatus').textContent = 'This page blocked the new tab. Use the link to the full version instead.'; };
 if(EMBEDDED || !/\.html?$|\/$/.test(location.pathname) || location.protocol==='blob:') { const hl = $('#homeLink'); if(hl && (EMBEDDED || location.protocol==='blob:')) hl.hidden = true; }
 
@@ -1880,7 +1919,33 @@ if(EMBEDDED || !/\.html?$|\/$/.test(location.pathname) || location.protocol==='b
   s.P = {...baseOf(s.instr), ...e.p, ...DEVP}; s.cur = e;
  });
  renderPanel(); buildKb(); draw();
- $('#powerBtn').onclick = async () => {
+ if(PLUGIN){
+  $('#power').remove(); initMidi();
+  const be = window.__JUCE__.backend;
+  $('#audioSetup').onclick = () => bridge.emit('openSettings', {});
+  be.addEventListener('init', d => {
+   if(d.standalone) $('#audioSetup').hidden = false;
+   try{ const u = d.user ? JSON.parse(d.user) : null; if(Array.isArray(u)){ USER = u.filter(x=>x && INSTR[x.instr] && x.name && x.p); } }catch(_){}
+   let st = null; try{ st = d.state ? JSON.parse(d.state) : null; }catch(_){}
+   if(st && st.slots){
+    mode = ['single','layer','split'].includes(st.mode) ? st.mode : 'single'; splitNote = st.splitNote ?? 60; bVol = st.bVol ?? 0.8; bOct = st.bOct|0; editSlot = mode==='single' ? 0 : (st.editSlot|0);
+    if(st.dev) for(const k of DEV) if(k in st.dev) DEVP[k] = st.dev[k];
+    st.slots.forEach((x,i)=>{ const s = slots[i]; if(!x || !INSTR[x.instr]) return; s.instr = x.instr; s.P = {...baseOf(x.instr), ...x.P, ...DEVP};
+     const L = allPatches(x.instr), c = x.cur; s.cur = (c && L.find(p=>p.name===c.name && !!p.user===!!c.user)) || {name:c?.name||'Restored sound', cat:c?.cat||INSTR[x.instr].cats[0], p:x.P, user:!!c?.user}; s.dirty = !!x.dirty; });
+    renderPanel();
+   }
+   bridge.sync();
+  });
+  be.addEventListener('tick', d => {
+   Object.assign(TICK, d);
+   const on = new Set(d.keys||[]); for(const k in kbEls){ const el = kbEls[k], want = on.has(+k); if(el.classList.contains('on') !== want){ el.classList.toggle('on', want); if(!want) el.style.removeProperty('--p'); } }
+  });
+  be.addEventListener('midi', d => { const st = $('#midiStatus'); if(!st) return; const n = (d.devices||[]).join(', ');
+   st.textContent = n ? 'MIDI: ' + n : 'MIDI: no keyboard found — plug one in'; $('#led').classList.toggle('ok', !!n); });
+  be.addEventListener('param', d => { const s = slots[d.slot]; if(!s || !s.P) return; s.P[d.key] = d.value; if(d.slot===editSlot && ctl[d.key]) drawCtl(d.key); });
+  bridge.emit('ready', {});
+ }
+ if($('#powerBtn')) $('#powerBtn').onclick = async () => {
   $('#powerBtn').textContent = 'Starting…';
   await initAudio(); try{ await ctx.resume(); }catch(_){}
   $('#power').remove(); initMidi();
