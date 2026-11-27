@@ -1,0 +1,67 @@
+name: Build Pulse 16 drum machine (macOS)
+
+on:
+  push:
+    branches: [pulse16]
+    paths: ['drums/**', '.github/workflows/build-pulse16.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  mac:
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Ninja
+        run: brew install ninja
+
+      - name: Configure (universal - Apple Silicon and Intel)
+        run: cmake -S drums -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+
+      - name: Build AU, VST3 and Standalone
+        run: cmake --build build --config Release -j 4
+
+      - name: Collect and sign
+        run: |
+          set -e
+          A=build/Pulse16_artefacts/Release
+          ls -R "$A" | head -40
+          mkdir -p out
+          cp -R "$A/AU/Pulse 16.component" out/
+          cp -R "$A/VST3/Pulse 16.vst3" out/
+          cp -R "$A/Standalone/Pulse 16.app" out/
+          for b in out/*.component out/*.vst3 out/*.app; do codesign --force --deep --sign - "$b"; done
+          cp "drums/dist/Install Pulse 16.command" drums/dist/README.txt out/
+          chmod +x "out/Install Pulse 16.command"
+
+      - name: Validate the Audio Unit with auval
+        run: |
+          mkdir -p ~/Library/Audio/Plug-Ins/Components
+          cp -R "out/Pulse 16.component" ~/Library/Audio/Plug-Ins/Components/
+          killall -9 AudioComponentRegistrar || true
+          sleep 2
+          auval -v aumu Pl16 Embr | tee auval.txt | tail -40
+          grep -q "AU VALIDATION SUCCEEDED" auval.txt
+
+      - name: Zip
+        run: |
+          cd out && ditto -c -k --sequesterRsrc --keepParent . "../Pulse-16-macOS.zip" && cd ..
+          ls -la Pulse-16-macOS.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Pulse-16-macOS
+          path: Pulse-16-macOS.zip
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="pulse16-v1.0.${{ github.run_number }}"
+          gh release create "$TAG" Pulse-16-macOS.zip --target "${{ github.sha }}" \
+            --title "Pulse 16 drum machine 1.0.${{ github.run_number }}" \
+            --notes "Pulse 16 drum machine as an Audio Unit (Logic Pro), VST3 and standalone app for macOS (Apple Silicon and Intel). Download Pulse-16-macOS.zip, unzip it, and open 'Install Pulse 16.command' (right-click > Open)."
